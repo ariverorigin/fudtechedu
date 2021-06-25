@@ -1,0 +1,23 @@
+ion-searchbar {
+  padding-top: 16px !important;
+  --border-radius: 16px !important;
+  --background: transparent !important;
+}
+
+ion-searchbar ::ng-deep {
+  .searchbar-input-container {
+    border-radius: 16px !important;
+    height: 42px !important;
+    margin: 8px 12px 0 !important;
+    -moz-box-shadow: inset 0 0 6px 3px var(--ion-color-light) !important;
+    -webkit-box-shadow: inset 0 0 6px 3px var(--ion-color-light) !important;
+    box-shadow: inset 0 0 6px 3px var(--ion-color-light) !important;
+  }
+  .searchbar-search-icon {
+    left: 15px !important;
+  }
+  .searchbar-input {
+    padding-left: 40px !important;
+    border: 1px solid var(--ion-color-medium) !important;
+  }
+}

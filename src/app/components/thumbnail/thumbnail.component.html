@@ -1,0 +1,13 @@
+<ion-img
+  [src]="src"
+  class="image-loading"
+  [alt]="alt"
+  (ionImgDidLoad)="imageLoaded($event)"
+  (ionError)="onImage404($event)"
+></ion-img>
+<!-- <ion-img [src]="src" [alt]="alt" (ionImgDidLoad)="imageLoaded($event)" (ionError)="onImage404($event)"></ion-img> -->
+
+<!-- <ion-img [src]="src" class="image-loading" [alt]="alt" (ionImgDidLoad)="imageLoaded($event)" (ionError)="onImage404($event)"></ion-img> -->
+<div animated class="skeleton-imgage">
+  <!-- <ion-spinner name="crescent"></ion-spinner> -->
+</div>

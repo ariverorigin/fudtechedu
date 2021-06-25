@@ -1,0 +1,3 @@
+export const STORAGE_KEY = {
+  NETWORK_STATUS: 'NETWORK_STATUS',
+};

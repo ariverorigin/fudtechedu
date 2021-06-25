@@ -1,0 +1,14 @@
+ion-tabs ion-tab-bar {
+  border: 0 !important;
+  ion-tab-button:first-child {
+    padding-left: 32px !important;
+  }
+  ion-tab-button:last-child {
+    padding-right: 32px !important;
+  }
+  ion-tab-button.tab-selected ion-icon {
+    font-weight: bold !important;
+    color: var(--ion-color-secondary) !important;
+    font-size: 30px !important;
+  }
+}

@@ -1,0 +1,29 @@
+ion-card {
+  border-radius: 16px !important;
+  border: 1px solid var(--ion-color-light) !important;
+}
+
+ion-card-header {
+  padding: 16px 16px 12px !important;
+  ion-card-title {
+    font-size: 16px !important;
+    font-weight: bold !important;
+    color: var(--ion-color-primary) !important;
+  }
+}
+
+ion-card-content {
+  padding: 0 16px 0 !important;
+  p {
+    font-size: 12px !important;
+  }
+}
+ion-item {
+  --inner-padding-start: 0 !important;
+  --inner-padding-end: 0 !important;
+  --padding-start: 8px !important;
+
+  ion-button ion-icon {
+    font-size: 20px !important;
+  }
+}

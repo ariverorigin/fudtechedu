@@ -1,5 +1,7 @@
 {
   "name": "FoodChemEdu",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

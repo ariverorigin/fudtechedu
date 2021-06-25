@@ -1,0 +1,21 @@
+ion-header {
+  ion-toolbar {
+    --min-height: 110px !important;
+    ion-title {
+      p {
+        margin: 0 !important;
+      }
+      p.title {
+        font-size: 18px !important;
+      }
+      p.sub-title {
+        font-size: 14px !important;
+        color: var(--ion-color-medium) !important;
+      }
+    }
+  }
+}
+
+ion-header.header-md::after {
+  background-image: none !important;
+}
