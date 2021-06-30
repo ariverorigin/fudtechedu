@@ -1,8 +1,11 @@
 import { SharedDataService } from 'src/app/utilities/services/shared-data.service';
-import * as QueryString from 'query-string';
 import { Component, OnInit } from '@angular/core';
-import { DUMMY_LESSON } from 'src/app/utilities/data/lessons.data';
-import { APIService, WooService } from 'src/app/utilities/services';
+import { APIService, MessageService } from 'src/app/utilities/services';
+import { IProduct } from 'src/app/utilities/interfaces';
+import { NavController } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
+import { STORAGE_KEY } from 'src/app/utilities/configs/storage.key';
+import { ErrorMessagesEnum } from 'src/app/utilities/enum';
 
 @Component({
   selector: 'app-home',
@@ -10,17 +13,22 @@ import { APIService, WooService } from 'src/app/utilities/services';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-  constructor(private apiService: APIService, private wooService: WooService, private sharedDataService: SharedDataService) {}
+  constructor(
+    private apiService: APIService,
+    private sharedDataService: SharedDataService,
+    private navController: NavController,
+    private storage: Storage,
+    private messageService: MessageService
+  ) {}
 
   ngOnInit() {
     this.fetchData();
   }
 
   async fetchData(q?: string) {
-    // const req: { url: string } = this.wooService.api._request2(
-    //   'get',
-    //   'products'
-    // );
+    await this.messageService.showLoading({
+      message: 'Initializing your lessons...',
+    });
 
     const params = {
       search: q,
@@ -28,10 +36,33 @@ export class HomePage implements OnInit {
       per_page: 50,
     };
 
-    const response = await this.apiService
-      .getData('products', params)
-      .toPromise();
-    this.sharedDataService.lessons = response ? response : [];
+    const tempLessonsLocal = await this.storage.get(STORAGE_KEY.LESSONS);
+    this.sharedDataService.offlineLessons = await this.storage.get(
+      STORAGE_KEY.OFFLINE_LESSON
+    );
+
+    if (!tempLessonsLocal) {
+      this.apiService.getData('products', params).subscribe(
+        (response) => {
+          this.storage.set('lessons', response);
+          this.sharedDataService.lessons = response ? response : [];
+          this.messageService.dismisActiveControllers('loading');
+        },
+        (e) => {
+          console.log(e);
+          this.messageService.presentToast(ErrorMessagesEnum.Default);
+          this.messageService.dismisActiveControllers('loading');
+        }
+      );
+    } else {
+      this.sharedDataService.lessons = tempLessonsLocal;
+      await this.messageService.dismisActiveControllers('loading');
+    }
+  }
+
+  onClickItem(item: IProduct) {
+    this.sharedDataService.selectedLesson = item;
+    this.navController.navigateForward('details');
   }
 
   get Data() {

@@ -1,0 +1,61 @@
+<ion-header [class.on-transparent-header]="lesson?.images.length > 0">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="ar-back" color="dark"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="onClickSaveOffline()">
+        <ion-icon
+          slot="icon-only"
+          [name]="!isSavedOffline ? 'ar-bookmark' : 'ar-bookmarked'"
+        ></ion-icon>
+      </ion-button>
+      <ion-button (click)="onClickShare()">
+        <ion-icon slot="icon-only" name="ar-share"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <section
+    class="content-header"
+    [class.no-image]="lesson?.images.length === 0"
+  >
+    <ion-img
+      class="header-image"
+      *ngIf="lesson?.images.length > 0"
+      [src]="lesson?.images.length > 0 ? lesson?.images[0].src : null"
+    ></ion-img>
+
+    <h1>{{ lesson?.name }}</h1>
+    <p class="date">
+      {{ lesson?.date_created | amLocal | amDateFormat: 'MMMM DD, YYYY hh:mm A'
+      }}
+    </p>
+    <ion-fab-button color="danger" *ngIf="videoUrl" (click)="watchVideo()">
+      <ion-icon name="ar-play-button"></ion-icon>
+    </ion-fab-button>
+  </section>
+
+  <section class="content-body">
+    <div
+      class="brief-description"
+      [innerHTML]="lesson?.short_description"
+    ></div>
+    <div class="description" [innerHTML]="lesson?.description"></div>
+    <div class="ion-text-center ion-margin-top ion-margin-bottom">
+      <ion-button
+        color="success"
+        mode="ios"
+        shape="round"
+        class="text-bold"
+        (click)="takeQuiz()"
+        *ngIf="exerciseUrl"
+      >
+        <ion-icon name="ar-quiz" slot="start"></ion-icon>
+        Take the Quiz
+      </ion-button>
+    </div>
+  </section>
+</ion-content>

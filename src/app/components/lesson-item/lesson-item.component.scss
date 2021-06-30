@@ -1,6 +1,6 @@
 ion-card {
   border-radius: 16px !important;
-  border: 1px solid var(--ion-color-light) !important;
+  border: 1px solid var(--ion-color-darkmode-light) !important;
 }
 
 ion-card-header {
@@ -13,7 +13,12 @@ ion-card-header {
 }
 
 ion-card-content {
-  padding: 0 16px 0 !important;
+  padding: 0 !important;
+  h3 {
+    font-weight: bold;
+    color: var(--ion-color-darkmode-primary);
+    margin-bottom: 8px;
+  }
   p {
     font-size: 12px !important;
   }

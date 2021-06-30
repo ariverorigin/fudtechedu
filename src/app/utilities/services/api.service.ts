@@ -11,13 +11,18 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { WooService } from './woo.service';
+import { HTTP } from '@ionic-native/http/ngx';
+import { Platform } from '@ionic/angular';
+import { from } from 'rxjs';
 
 @Injectable()
 export class APIService {
   constructor(
     private networkService: NetworkService,
     private httpClient: HttpClient,
-    private wooService: WooService
+    private wooService: WooService,
+    private http: HTTP,
+    private platform: Platform
   ) {}
 
   prepareUrl(slug: string, type: 'get' | 'post' | 'put' | 'delete' = 'get') {
@@ -54,7 +59,27 @@ export class APIService {
     //   endpointUrl = !qry ? url : `${url}?${qry}`;
 
     if (this.networkService.isConnected) {
-      return this.httpClient.get(request.url, this.Header);
+      if (this.platform.is('cordova')) {
+        return from(
+          new Promise((resolve, reject) => {
+            this.http
+              .get(request.url, {}, this.Header.headers)
+              .then((response) => {
+                resolve(JSON.parse(response.data));
+              })
+              .catch((e) => {
+                reject(e);
+              });
+          })
+        );
+      } else {
+        return this.httpClient.get(request.url, {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, PUT',
+          },
+        });
+      }
     } else {
       return Observable.throw('CONN_ERR');
     }

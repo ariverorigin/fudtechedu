@@ -4,20 +4,20 @@ import {
   Input,
   OnChanges,
   SimpleChanges,
-} from "@angular/core";
-import { SharedDataService, WooService } from "src/app/utilities/services";
+} from '@angular/core';
+import { SharedDataService, WooService } from 'src/app/utilities/services';
 
 @Component({
-  selector: "app-thumbnail",
-  templateUrl: "./thumbnail.component.html",
-  styleUrls: ["./thumbnail.component.scss"],
+  selector: 'app-thumbnail',
+  templateUrl: './thumbnail.component.html',
+  styleUrls: ['./thumbnail.component.scss'],
 })
 export class ThumbnailComponent implements OnInit {
   @Input() src: string;
   @Input() height: number;
   @Input() changeDimension: boolean = true;
-  defaultDimensionExtension = "-405x330";
-  defaultProductImage = "/assets/images/default-thumbnail.png";
+  defaultDimensionExtension = '-300x300';
+  defaultProductImage = '/assets/images/thumbnail.png';
   alt: string;
 
   constructor(
@@ -48,16 +48,16 @@ export class ThumbnailComponent implements OnInit {
     if (!this.changeDimension) {
       this.src = this.src || this.defaultProductImage;
     } else {
-      const imageUrl = this.src || "",
-        fileName = (this.alt = imageUrl ? this.getFilename(imageUrl) : "");
+      const imageUrl = this.src || '',
+        fileName = (this.alt = imageUrl ? this.getFilename(imageUrl) : '');
 
       if (fileName) {
-        const ext = fileName.split(".").reverse()[0],
-          rawName = fileName.replace("." + ext, "");
+        const ext = fileName.split('.').reverse()[0],
+          rawName = fileName.replace('.' + ext, '');
 
         this.src = this.src.replace(
           fileName,
-          rawName + this.defaultDimensionExtension + "." + ext
+          rawName + this.defaultDimensionExtension + '.' + ext
         );
       } else {
         this.src = this.defaultProductImage;
@@ -66,19 +66,18 @@ export class ThumbnailComponent implements OnInit {
   }
 
   onImage404(event) {
-    if (this.src)
-      this.src = this.src;
+    if (this.src) this.src = this.src;
     else this.src = this.defaultProductImage;
   }
 
   imageLoaded(event) {
     event.srcElement.className = event.srcElement.className.replace(
-      "image-loading",
-      ""
+      'image-loading',
+      ''
     );
   }
 
   getFilename(str) {
-    return str.split("\\").pop().split("/").pop();
+    return str.split('\\').pop().split('/').pop();
   }
 }

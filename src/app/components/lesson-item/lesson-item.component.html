@@ -22,18 +22,31 @@
     </ion-buttons>
   </ion-item>
 </ion-card> -->
-<ion-card mode="ios" class="box-product list-view" button>
+<ion-card
+  mode="ios"
+  class="box-product list-view"
+  button
+  (click)="onClickItem(item)"
+>
   <ion-card-content>
     <ion-grid class="ion-no-padding">
       <ion-row>
-        <ion-col size="4">
+        <ion-col size="5">
           <app-thumbnail
             [src]="item?.images.length > 0 ? (item?.images)[0].src : ''"
-            ></app-thumbnail>
+          ></app-thumbnail>
         </ion-col>
-        <ion-col size="8">
-          <h3>{{ item?.name }}</h3>
-          <p>{{ item?.short_description }}</p>
+        <ion-col size="7">
+          <section class="ion-padding">
+            <h3>{{ item?.name }}</h3>
+            <p>
+              {{
+                (item?.short_description || "").length > 150
+                  ? (item?.short_description | slice: 0:150) + "..."
+                  : item?.short_description
+              }}
+            </p>
+          </section>
         </ion-col>
       </ion-row>
     </ion-grid>

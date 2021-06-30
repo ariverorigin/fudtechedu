@@ -1,35 +1,35 @@
-@import '../../../theme/responsive.scss';
+// @import '../../../theme/responsive.scss';
 
 ion-img:not(.image-loading) + .skeleton-imgage {
-	// display: none;
-	transition: opacity .5s ease-out;
-	opacity: 0;
-	height: 0;
-	overflow: hidden;
+  // display: none;
+  transition: opacity 0.5s ease-out;
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
 }
 
 ion-img {
-	width: 100% !important;
-	height: auto !important;
+  width: 100% !important;
+  height: auto !important;
 }
 
 .skeleton-imgage {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	z-index: 2;
-	// height: auto;
-	min-height: 80px;
-	// max-height: 330px;
-	margin: 0;
-	background: var(--ion-color-light);
-	height: auto !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 2;
+  // height: auto;
+  min-height: 80px;
+  // max-height: 330px;
+  margin: 0;
+  background: var(--ion-color-light);
+  height: auto !important;
 
-	ion-spinner {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-	}
+  ion-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 }

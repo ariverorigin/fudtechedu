@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar class="home-toolbar">
     <ion-title class="ion-margin-top">
       <p class="title">
         Hello! <span class="text-color-primary text-bold">Gian</span>
@@ -11,6 +11,9 @@
 
 <ion-content>
   <ng-container *ngFor="let item of Data">
-    <app-lesson-item [item]="item"></app-lesson-item>
+    <app-lesson-item
+      [item]="item"
+      (onClick)="onClickItem($event)"
+    ></app-lesson-item>
   </ng-container>
 </ion-content>
