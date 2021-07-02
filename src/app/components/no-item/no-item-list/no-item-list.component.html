@@ -1,0 +1,16 @@
+<ion-item detail="false" class="ion-text-wrap" lines="none">
+  <i
+    *ngIf="config.icon"
+    [class]="config.icon"
+    [ngClass]="config.icon_css_class"
+    slot="start"
+  ></i>
+  <ion-label>
+    <h2 *ngIf="config.title" [ngClass]="config.title_css_class">
+      {{ config.title }}
+    </h2>
+    <p *ngIf="config.description" class="text-placeholder">
+      {{ config.description }}
+    </p>
+  </ion-label>
+</ion-item>

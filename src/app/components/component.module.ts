@@ -4,9 +4,23 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
-import { LessonItemComponent, ThumbnailComponent } from '.';
+import {
+  LessonItemComponent,
+  ThumbnailComponent,
+  NoItemComponent,
+  NoItemImageComponent,
+  NoItemListComponent,
+  ImageCachingComponent,
+} from '.';
 
-const components = [LessonItemComponent, ThumbnailComponent];
+const components = [
+  LessonItemComponent,
+  ThumbnailComponent,
+  NoItemComponent,
+  NoItemImageComponent,
+  NoItemListComponent,
+  ImageCachingComponent,
+];
 
 @NgModule({
   declarations: components,

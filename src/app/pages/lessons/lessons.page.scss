@@ -1,0 +1,16 @@
+h1 {
+  font-size: 20px !important;
+  font-weight: bold;
+  color: var(--ion-color-darkmode-primary);
+  margin-bottom: 4px;
+  padding: 16px 0 0 20px !important;
+  margin-top: 0 !important;
+  text-transform: uppercase;
+}
+
+.no-record-container {
+  height: 80%;
+  width: calc(100% - 32px);
+  position: fixed;
+  padding: 0;
+}

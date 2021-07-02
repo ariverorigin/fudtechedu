@@ -1,0 +1,9 @@
+<img [src]="_src" *ngIf="_src != ''; else loading" />
+
+<ng-template #loading>
+  <ion-skeleton-text
+    animated
+    [style.width]="skeletonWidth"
+    [style.height]="skeletonHeight"
+  ></ion-skeleton-text>
+</ng-template>

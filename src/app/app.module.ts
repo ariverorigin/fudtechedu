@@ -18,6 +18,8 @@ import { AppLauncher } from '@ionic-native/app-launcher/ngx';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 import { HTTP } from '@ionic-native/http/ngx';
+import { File } from '@ionic-native/file/ngx';
+import { Base64 } from '@ionic-native/base64/ngx';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -37,6 +39,8 @@ import { HTTP } from '@ionic-native/http/ngx';
     InAppBrowser,
     SocialSharing,
     HTTP,
+    File,
+    Base64,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     SharedDataService,
   ],

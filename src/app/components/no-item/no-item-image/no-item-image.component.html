@@ -1,0 +1,48 @@
+<!-- Generated template for the NoItemsFoundComponent component -->
+<div class="fullpage-no-item-container">
+  <ion-grid>
+    <ion-row class="ion-text-center" *ngIf="config?.image || config?.icon">
+      <ion-col>
+        <ion-icon
+          *ngIf="!config?.image"
+          [name]="config?.icon"
+          [ngClass]="config?.icon_css_class"
+        ></ion-icon>
+        <img *ngIf="config?.image" [src]="config?.image" />
+        <!-- <div *ngIf="config?.image && IsSVGImage" [ngStyle]="{'-webkit-mask-image':'url(' + config?.image + ')', 'mask-image':'url(' + config?.image + ')'}" class="svg-image"></div> -->
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="ion-text-center">
+        <h2
+          class="ion-text-wrap ion-no-margin"
+          *ngIf="config?.title"
+          [ngClass]="config?.title_css_class"
+        >
+          {{ config?.title }}
+        </h2>
+        <p
+          *ngIf="config?.description"
+          [ngClass]="config?.description_css_class"
+        >
+          {{ config?.description }}
+        </p>
+
+        <ion-button
+          *ngIf="config?.button"
+          shape="round"
+          [mode]="config?.button?.mode"
+          [fill]="config?.button?.fill"
+          [color]="config?.button?.color"
+          [ngClass]="config?.button?.cssClass"
+          (click)="onBtnClick()"
+        >
+          <ng-container *ngIf="config?.button?.title">
+            {{ config?.button?.title }}
+          </ng-container>
+          <span [innerHTML]="config?.button?.html"></span>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>

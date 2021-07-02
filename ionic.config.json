@@ -2,6 +2,5 @@
   "name": "FoodChemEdu",
   "integrations": {
     "cordova": {}
-  },
-  "type": "angular"
+  }
 }

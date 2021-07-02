@@ -4,23 +4,14 @@ ion-img.header-image {
 }
 
 section.content-header {
-  min-height: 40% !important;
-  text-align: center !important;
-  border-radius: 0 0 40px 40px;
-  border-bottom: 1px solid var(--ion-color-darkmode-light) !important;
-  box-shadow: rgb(0 0 0 / 12%) 0px 4px 16px;
-  padding-bottom: 32px !important;
-  background: #fff !important;
-  --background: #fff !important;
-
   ion-img {
-    min-height: 300px;
+    min-height: 200px;
   }
 
   h1 {
     font-size: 18px !important;
     font-weight: bold;
-    color: var(--ion-color-darkmode-primarydark);
+    color: var(--ion-color-darkmode-primary);
     margin-bottom: 4px;
     padding-top: 16px !important;
     margin-top: 0 !important;
@@ -34,9 +25,9 @@ section.content-header {
 
   ion-fab-button {
     position: absolute;
-    top: 52%;
+    bottom: -32px;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, 0);
   }
 }
 
@@ -54,5 +45,31 @@ section.content-body {
 
   .description {
     font-size: 13px !important;
+  }
+}
+
+.image-slides {
+  .swiper-wrapper {
+    .swiper-slide {
+      background-color: rgb(255, 255, 255);
+    }
+  }
+  img {
+    filter: brightness(0.9);
+  }
+}
+
+:host ::ng-deep ion-slides.image-slides {
+  .swiper-pagination {
+    .swiper-pagination-bullet {
+      background: var(--ion-color-secondary) !important;
+      opacity: 0.5 !important;
+    }
+    .swiper-pagination-bullet-active {
+      background: var(--ion-color-secondary) !important;
+      opacity: 1 !important;
+      width: 15px !important;
+      border-radius: 10px !important;
+    }
   }
 }

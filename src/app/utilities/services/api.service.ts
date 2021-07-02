@@ -62,8 +62,12 @@ export class APIService {
       if (this.platform.is('cordova')) {
         return from(
           new Promise((resolve, reject) => {
+            Object.keys(data).map((k) => {
+              data[k] = (data[k] || '').toString();
+            });
+
             this.http
-              .get(request.url, {}, this.Header.headers)
+              .get(request.url, data || {}, this.Header.headers)
               .then((response) => {
                 resolve(JSON.parse(response.data));
               })
@@ -73,11 +77,11 @@ export class APIService {
           })
         );
       } else {
-        return this.httpClient.get(request.url, {
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, PUT',
-          },
+        const queryParams = QueryString.stringify(data),
+          url = !queryParams ? request.url : `${request.url}&${queryParams}`;
+        console.log(queryParams, data);
+        return this.httpClient.get(url, {
+          headers: {},
         });
       }
     } else {

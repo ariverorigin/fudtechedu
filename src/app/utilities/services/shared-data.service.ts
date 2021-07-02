@@ -8,6 +8,7 @@ export class SharedDataService {
   lessons: IProduct[];
   selectedLesson: IProduct;
   offlineLessons: IProduct[];
+  featuredLesson: IProduct[];
 
   constructor() {}
 

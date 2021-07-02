@@ -11,6 +11,7 @@ import {
   SharedDataService,
   StorageService,
   NativePluginService,
+  FileService,
 } from 'src/app/utilities/services';
 
 @NgModule({
@@ -22,6 +23,7 @@ import {
     WooService,
     StorageService,
     NativePluginService,
+    FileService,
   ],
 })
 export class UtilitiesModule {}

@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Lessons</ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon slot="icon-only" name="ar-search"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ng-container *ngFor="let item of Data">
+    <app-lesson-item
+      [item]="item"
+      (onClick)="onClickItem($event)"
+    ></app-lesson-item>
+  </ng-container>
+  <section
+    class="no-record-container ion-margin"
+    *ngIf="Data.length === 0 && !loading"
+  >
+    <app-no-item [view]="NoRecordsViewType.Image" [config]="NoRecordsConfig">
+    </app-no-item>
+  </section>
+</ion-content>

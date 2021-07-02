@@ -27,6 +27,7 @@ export class DetailsPage implements OnInit {
   shortDescription: string;
 
   isSavedOffline: boolean;
+  imagesSrc: any[];
 
   constructor(
     private sharedDataService: SharedDataService,
@@ -69,6 +70,10 @@ export class DetailsPage implements OnInit {
     this.shortDescription = this.sharedDataService
       .stripHtml(this.lesson.short_description || '')
       .slice(0, 150);
+
+    this.imagesSrc = this.lesson.images
+      ? JSON.parse(JSON.stringify(this.lesson.images))
+      : [];
   }
 
   watchVideo() {
@@ -122,5 +127,13 @@ export class DetailsPage implements OnInit {
 
   get NoInternet() {
     return !this.networkService.isConnected;
+  }
+
+  get Images() {
+    return this.imagesSrc;
+  }
+
+  get SliderOptions() {
+    return { zoom: true };
   }
 }

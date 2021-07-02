@@ -1,4 +1,7 @@
-<ion-header [class.on-transparent-header]="lesson?.images.length > 0">
+<ion-header
+  [class.on-transparent-header]="lesson?.images.length > 0"
+  class="dont-apply"
+>
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button icon="ar-back" color="dark"></ion-back-button>
@@ -22,11 +25,28 @@
     class="content-header"
     [class.no-image]="lesson?.images.length === 0"
   >
-    <ion-img
+    <app-image-caching
+      *ngIf="lesson?.images.length > 0"
+      [src]="lesson?.images.length > 0 ? lesson?.images[0].src : null"
+    ></app-image-caching>
+    <!-- <ion-slides
+      class="image-slides"
+      [pager]="Images && Images.length > 0"
+      [options]="SliderOptions"
+    >
+      <ng-container *ngIf="Images && Images.length > 0">
+        <ion-slide *ngFor="let image of Images">
+          <div>
+            <img [src]="image?.src" ionImgViewer />
+          </div>
+        </ion-slide>
+      </ng-container>
+    </ion-slides> -->
+    <!-- <ion-img
       class="header-image"
       *ngIf="lesson?.images.length > 0"
       [src]="lesson?.images.length > 0 ? lesson?.images[0].src : null"
-    ></ion-img>
+    ></ion-img> -->
 
     <h1>{{ lesson?.name }}</h1>
     <p class="date">
