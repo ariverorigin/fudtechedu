@@ -185,6 +185,15 @@ export class MessageService {
       message: msg,
       duration: 5000,
       cssClass: 'custom-toast',
+      buttons: [
+        {
+          text: '✖',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          },
+        },
+      ],
     });
 
     this.toastHolder.onDidDismiss().then((result) => {

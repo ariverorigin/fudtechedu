@@ -3,29 +3,48 @@ import { DirectoryEntry } from '@ionic-native/file/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { Platform } from '@ionic/angular';
 import { environment } from 'src/environments/environment';
+import { WebView } from '@ionic-native/ionic-webview/ngx';
+import { Base64 } from '@ionic-native/base64/ngx';
 
 @Injectable({ providedIn: 'root' })
 export class FileService {
-  constructor(private file: File, private platform: Platform) {}
+  constructor(
+    private file: File,
+    private platform: Platform,
+    private webview: WebView,
+    private base64: Base64
+  ) {}
 
   checkFileExist(filename: string, path: string): Promise<any> {
     return this.file.checkFile(path, filename);
   }
 
-  async getBase64ImageFromUrl(imageUrl, isLocal?: boolean) {
-    var res = await fetch(`${!isLocal ? environment.heroku : ''}${imageUrl}`);
-    var blob = await res.blob();
+  getBase64ImageFromLocal(imagePath) {
+    return new Promise((resolve, reject) => {
+      this.base64.encodeFile(imagePath).then(
+        (base64File: string) => {
+          if (base64File) resolve(base64File.split(',')[1]);
+          else reject(false);
+        },
+        (err) => {
+          reject(false);
+        }
+      );
+    });
+  }
+
+  async getBase64ImageFromUrl(imageUrl) {
+    let res = await fetch(`${environment.heroku}${imageUrl}`);
+    let blob = await res.blob();
 
     return new Promise((resolve, reject) => {
-      var reader = new FileReader();
+      let reader: any = new FileReader();
 
       reader.onload = () => {
         resolve(reader.result);
       };
 
-      reader.onerror = () => {
-        return reject(false);
-      };
+      reader.onerror = reject;
       reader.readAsDataURL(blob);
     });
   }
@@ -46,19 +65,16 @@ export class FileService {
               resolve(true);
             })
             .catch((error) => {
-              console.log('createDir err', error);
               reject(false);
             });
         })
         .catch((err) => {
-          console.log('checkDir err', err);
           this.file
             .createDir(path, dirname, replace)
             .then((result: DirectoryEntry) => {
               resolve(true);
             })
             .catch((error) => {
-              console.log('createDir err', error);
               reject(false);
             });
         });
@@ -76,7 +92,6 @@ export class FileService {
             .removeRecursively(path, dirname)
             .then((_) => resolve(true))
             .catch((e) => {
-              console.log(e, 'ON ERROR');
               reject(false);
             });
         })
@@ -98,6 +113,14 @@ export class FileService {
         })
         .catch((err) => reject(err));
     });
+  }
+
+  normalizeUrl(file: string) {
+    return this.webview.convertFileSrc(file);
+  }
+
+  getStringBase64DataOnly(base64Data) {
+    return base64Data.replace(/^data:image\/[a-z]+;base64,/, '');
   }
 
   get DataDirectoryBasePath() {

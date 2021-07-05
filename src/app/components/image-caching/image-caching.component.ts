@@ -3,14 +3,14 @@ import { File, FileEntry } from '@ionic-native/file/ngx';
 import { Platform } from '@ionic/angular';
 import { FileService } from 'src/app/utilities/services';
 import { environment } from 'src/environments/environment';
-
+import { DomSanitizer } from '@angular/platform-browser';
 @Component({
   selector: 'app-image-caching',
   templateUrl: './image-caching.component.html',
   styleUrls: ['./image-caching.component.scss'],
 })
 export class ImageCachingComponent implements OnInit {
-  _src: string = '';
+  _src: any = '';
 
   @Input()
   set src(imageUrl: string) {
@@ -26,21 +26,37 @@ export class ImageCachingComponent implements OnInit {
       this.file
         .checkFile(`${imageCacheFilePath}/`, fileName)
         .then(async (result) => {
-          console.log("I'm here");
-          const blobData: any = await this.getBlobData(
-            `${imageCacheFilePath}/${fileName}`,
-            true
+          let fileData = await this.file.readAsText(
+            imageCacheFilePath,
+            fileName
           );
 
-          this._src = `data:image/${fileType};base64,${blobData}`;
+          this._src = fileData
+            ? this.sanitizer.bypassSecurityTrustUrl(
+                `data:image/${fileType};base64,${fileData}`
+              )
+            : imageUrl;
         })
         .catch(async (e) => {
-          await this.storeImage(imageUrl, imageCacheFilePath, fileName);
-          const blobData: any = await this.getBlobData(
-            `${imageCacheFilePath}/${fileName}`
+          const result = await this.storeImage(
+            imageUrl,
+            imageCacheFilePath,
+            fileName
           );
+          if (result) {
+            let fileData = await this.file.readAsText(
+              imageCacheFilePath,
+              fileName
+            );
 
-          this._src = `data:image/${fileType};base64,${blobData}`;
+            this._src = fileData
+              ? this.sanitizer.bypassSecurityTrustUrl(
+                  `data:image/${fileType};base64,${fileData}`
+                )
+              : imageUrl;
+          } else {
+            this._src = imageUrl;
+          }
         });
     }
   }
@@ -51,29 +67,31 @@ export class ImageCachingComponent implements OnInit {
   constructor(
     private file: File,
     private platform: Platform,
-    private fileService: FileService
+    private fileService: FileService,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit() {}
 
-  async getBlobData(url, isLocal?: boolean) {
-    return await this.fileService.getBase64ImageFromUrl(url, isLocal);
-  }
-
   async storeImage(url, path, fileName) {
-    const blobData: any = await this.getBlobData(url);
+    return new Promise((resolve, reject) => {
+      this.fileService
+        .getBase64ImageFromUrl(url)
+        .then((blobData: any) => {
+          blobData = this.fileService.getStringBase64DataOnly(blobData);
 
-    if (blobData) {
-      this.file
-        .writeFile(path, fileName, blobData)
-        .then((fileResult: FileEntry) => {
-          this._src = fileResult.nativeURL;
+          this.file
+            .writeFile(path, fileName, blobData)
+            .then((fileResult: FileEntry) => {
+              resolve(true);
+            })
+            .catch((e) => {
+              reject(false);
+            });
         })
         .catch((e) => {
-          this._src = url;
+          reject(false);
         });
-    } else {
-      this._src = url;
-    }
+    });
   }
 }

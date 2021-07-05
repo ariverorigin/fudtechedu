@@ -20,6 +20,7 @@ import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 import { HTTP } from '@ionic-native/http/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { Base64 } from '@ionic-native/base64/ngx';
+import { WebView } from '@ionic-native/ionic-webview/ngx';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -41,6 +42,7 @@ import { Base64 } from '@ionic-native/base64/ngx';
     HTTP,
     File,
     Base64,
+    WebView,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     SharedDataService,
   ],
