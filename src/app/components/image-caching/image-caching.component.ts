@@ -4,6 +4,8 @@ import { Platform } from '@ionic/angular';
 import { FileService } from 'src/app/utilities/services';
 import { environment } from 'src/environments/environment';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ModalController } from '@ionic/angular';
+import { ViewerModalComponent } from 'ngx-ionic-image-viewer';
 @Component({
   selector: 'app-image-caching',
   templateUrl: './image-caching.component.html',
@@ -11,6 +13,15 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class ImageCachingComponent implements OnInit {
   _src: any = '';
+  _class: string = '';
+
+  @Input() isImageViewer: boolean;
+  @Input() title: string;
+
+  @Input()
+  set class(className: string) {
+    this._class = className;
+  }
 
   @Input()
   set src(imageUrl: string) {
@@ -68,7 +79,8 @@ export class ImageCachingComponent implements OnInit {
     private file: File,
     private platform: Platform,
     private fileService: FileService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private modalController: ModalController
   ) {}
 
   ngOnInit() {}
@@ -93,5 +105,21 @@ export class ImageCachingComponent implements OnInit {
           reject(false);
         });
     });
+  }
+
+  async openViewer() {
+    const modal = await this.modalController.create({
+      component: ViewerModalComponent,
+      componentProps: {
+        src: this._src,
+        scheme: 'dark',
+        title: this.title,
+      },
+      cssClass: 'ion-img-viewer',
+      backdropDismiss: true,
+      keyboardClose: true,
+    });
+
+    return await modal.present();
   }
 }

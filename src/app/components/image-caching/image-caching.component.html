@@ -1,4 +1,9 @@
-<img [src]="_src" *ngIf="_src != ''; else loading" />
+<img
+  [src]="_src"
+  *ngIf="_src != ''; else loading"
+  class="{{ _class }}"
+  (click)="isImageViewer ? openViewer() : null"
+/>
 
 <ng-template #loading>
   <ion-skeleton-text

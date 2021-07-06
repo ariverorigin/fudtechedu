@@ -91,3 +91,10 @@ section.content-header {
   background: #fff !important;
   --background: #fff !important;
 }
+
+ion-viewer-modal ion-content,
+ion-viewer-modal ion-header:not(.dont-apply),
+ion-viewer-modal ion-footer {
+  --background: #121212 !important;
+  background: #121212 !important;
+}

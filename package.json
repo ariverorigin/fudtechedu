@@ -36,6 +36,7 @@
     "@ionic/storage-angular": "^3.0.6",
     "@woocommerce/woocommerce-rest-api": "^1.0.1",
     "cordova-plugin-network-information": "^3.0.0",
+    "ngx-ionic-image-viewer": "^0.7.4",
     "ngx-moment": "^5.0.0",
     "query-string": "^7.0.0",
     "rxjs": "~6.6.0",

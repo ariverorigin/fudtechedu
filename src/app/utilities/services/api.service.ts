@@ -80,7 +80,7 @@ export class APIService {
         const queryParams = QueryString.stringify(data),
           url = !queryParams ? request.url : `${request.url}&${queryParams}`;
         console.log(queryParams, data);
-        return this.httpClient.get(url, {
+        return this.httpClient.get(`${url}`, {
           headers: {},
         });
       }
@@ -136,7 +136,7 @@ export class APIService {
   get Header() {
     return {
       headers: {
-        // 'Content-Type': 'application/json',
+        'Content-Type': 'application/json',
       },
     };
   }

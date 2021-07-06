@@ -25,23 +25,26 @@
     class="content-header"
     [class.no-image]="lesson?.images.length === 0"
   >
-    <app-image-caching
-      *ngIf="lesson?.images.length > 0"
-      [src]="lesson?.images.length > 0 ? lesson?.images[0].src : null"
-    ></app-image-caching>
-    <!-- <ion-slides
+    <ion-slides
       class="image-slides"
       [pager]="Images && Images.length > 0"
       [options]="SliderOptions"
     >
       <ng-container *ngIf="Images && Images.length > 0">
-        <ion-slide *ngFor="let image of Images">
+        <ion-slide *ngFor="let image of Images; let i = index">
           <div>
-            <img [src]="image?.src" ionImgViewer />
+            <!-- <img [src]="image?.src" ionImgViewer /> -->
+            <app-image-caching
+              *ngIf="image?.src"
+              [src]="image?.src"
+              class="header-image"
+              [isImageViewer]="true"
+              [title]="lesson?.name"
+            ></app-image-caching>
           </div>
         </ion-slide>
       </ng-container>
-    </ion-slides> -->
+    </ion-slides>
     <!-- <ion-img
       class="header-image"
       *ngIf="lesson?.images.length > 0"

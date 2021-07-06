@@ -21,6 +21,7 @@ import { HTTP } from '@ionic-native/http/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { Base64 } from '@ionic-native/base64/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
+import { NgxIonicImageViewerModule } from 'ngx-ionic-image-viewer';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -31,6 +32,7 @@ import { WebView } from '@ionic-native/ionic-webview/ngx';
     AppRoutingModule,
     UtilitiesModule,
     HttpClientModule,
+    NgxIonicImageViewerModule,
   ],
   providers: [
     Network,

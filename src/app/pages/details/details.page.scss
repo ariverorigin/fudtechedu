@@ -1,13 +1,8 @@
-ion-img.header-image {
-  border-radius: 0 0 40px 40px;
-  overflow: hidden;
+ion-slide {
+  min-height: 200px;
 }
 
 section.content-header {
-  ion-img {
-    min-height: 200px;
-  }
-
   h1 {
     font-size: 18px !important;
     font-weight: bold;
