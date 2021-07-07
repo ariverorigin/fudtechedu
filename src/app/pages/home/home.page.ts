@@ -97,7 +97,7 @@ export class HomePage implements OnInit {
           this.storage.set(STORAGE_KEY.TIMESTAMP_HOME, moment().format());
         },
         (e) => {
-          console.log(e);
+          this.sharedDataService.featuredLesson = tempLessonsLocal;
           this.messageService.presentToast(ErrorMessagesEnum.Default);
           this.loading = false;
         }

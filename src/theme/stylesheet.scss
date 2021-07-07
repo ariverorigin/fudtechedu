@@ -82,7 +82,8 @@ ion-header.on-transparent-header {
   }
 }
 
-ion-header.on-transparent-header::after {
+ion-header.on-transparent-header::after,
+ion-header.no-after-header::after {
   background-image: none !important;
   height: 0 !important;
 }

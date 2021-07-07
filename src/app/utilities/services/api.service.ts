@@ -83,7 +83,7 @@ export class APIService {
     // const qry = QueryString.stringify(data),
     //   endpointUrl = !qry ? url : `${url}?${qry}`;
 
-    if (!this.networkService.isConnected) {
+    if (this.networkService.isConnected) {
       if (this.platform.is('cordova')) {
         return from(
           new Promise((resolve, reject) => {
