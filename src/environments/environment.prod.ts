@@ -5,4 +5,5 @@ export const environment = {
   api_secret: 'cs_2151aabdb9c284ed584cc2268bd5d060addf8559',
   cache_folder: 'CACHED-IMG',
   heroku: 'https://tim-canoe-44427.herokuapp.com/',
+  connection_error: 'CONN_ERR',
 };
