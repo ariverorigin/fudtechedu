@@ -1,12 +1,24 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar [class.ion-show]="!onSearch" [class.ion-hide]="onSearch">
     <ion-title>Offline Data</ion-title>
     <ion-buttons slot="end">
-      <ion-button>
+      <ion-button (click)="onClickSearchButton()">
         <ion-icon slot="icon-only" name="ar-search"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
+
+  <ion-searchbar
+    [class.ion-hide]="!onSearch"
+    [class.ion-show]="onSearch"
+    mode="ios"
+    showCancelButton="always"
+    animated="true"
+    debounce="800"
+    (ionChange)="onInputSearchBar($event)"
+    (ionClear)="onClearSearchBar()"
+    (ionCancel)="onClickCancelSearch()"
+  ></ion-searchbar>
 </ion-header>
 
 <ion-content>

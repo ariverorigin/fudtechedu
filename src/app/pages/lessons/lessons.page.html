@@ -1,12 +1,24 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar [class.ion-show]="!onSearch" [class.ion-hide]="onSearch">
     <ion-title>Lessons</ion-title>
     <ion-buttons slot="end">
-      <ion-button>
+      <ion-button (click)="onClickSearchButton()">
         <ion-icon slot="icon-only" name="ar-search"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
+
+  <ion-searchbar
+    [class.ion-hide]="!onSearch"
+    [class.ion-show]="onSearch"
+    mode="ios"
+    showCancelButton="always"
+    animated="true"
+    debounce="800"
+    (ionChange)="onInputSearchBar($event)"
+    (ionClear)="onClearSearchBar()"
+    (ionCancel)="onClickCancelSearch()"
+  ></ion-searchbar>
 </ion-header>
 
 <ion-content>
@@ -14,8 +26,28 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ng-container *ngFor="let item of Data">
+  <section
+    class="ion-padding-start ion-padding-end"
+    *ngIf="!loading && IsMoreThanSixHoursCache"
+  >
+    <p class="line-through-text">
+      <span class="text-color-placeholder">
+        Last update on {{ LessonTimestamp | amLocal | amDateFormat:
+        DateFormats.ShortMonthDayCommaYearHourMinuteSecondsMeridiem }}. Pull to
+        refresh
+      </span>
+    </p>
+  </section>
+
+  <app-skeleton-box-product
+    *ngIf="loading"
+    [noOfItemLoader]="5"
+    view="list"
+  ></app-skeleton-box-product>
+
+  <ng-container *ngIf="!loading && Data.length > 0">
     <app-lesson-item
+      *ngFor="let item of Data"
       [item]="item"
       (onClick)="onClickItem($event)"
     ></app-lesson-item>

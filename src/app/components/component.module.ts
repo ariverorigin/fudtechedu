@@ -11,6 +11,8 @@ import {
   NoItemImageComponent,
   NoItemListComponent,
   ImageCachingComponent,
+  BannerComponent,
+  SkeletonBoxProductComponent,
 } from '.';
 
 const components = [
@@ -20,6 +22,8 @@ const components = [
   NoItemImageComponent,
   NoItemListComponent,
   ImageCachingComponent,
+  BannerComponent,
+  SkeletonBoxProductComponent,
 ];
 
 @NgModule({

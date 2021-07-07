@@ -1,0 +1,17 @@
+<div *ngIf="loading">
+  <ion-skeleton-text animated style="height: 200px; border-radius: 5px">
+  </ion-skeleton-text>
+</div>
+<ng-container *ngIf="banners.length > 0" [class.ion-hide]="loading">
+  <ion-slides
+    pager="true"
+    #ionSlides
+    class="banner-slider"
+    [options]="sliderOptions"
+  >
+    <ion-slide *ngFor="let src of banners" class="ion-no-padding animate-item">
+      <!-- <img [src]="src" /> -->
+      <app-image-caching skeletonWidth="100%" [src]="src"></app-image-caching>
+    </ion-slide>
+  </ion-slides>
+</ng-container>

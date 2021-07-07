@@ -1,0 +1,79 @@
+<ion-list class="product-list" mode="md" *ngIf="view === 'list'">
+  <ion-card
+    mode="ios"
+    class="box-product list-view"
+    *ngFor="let item of itemLoader"
+  >
+    <ion-card-content>
+      <ion-grid class="ion-no-padding">
+        <ion-row>
+          <ion-col size="5">
+            <ion-skeleton-text
+              animated
+              style="width: auto; height: 100px"
+              class="skeleton-imgage-category ion-no-margin"
+            ></ion-skeleton-text>
+          </ion-col>
+          <ion-col [size]="7">
+            <section class="ion-padding">
+              <h3>
+                <ion-skeleton-text
+                  animated
+                  style="width: 70%; height: 18px"
+                  class="skeleton-text"
+                ></ion-skeleton-text>
+              </h3>
+              <p>
+                <ion-skeleton-text
+                  animated
+                  style="width: 40%; height: 14px"
+                  class="skeleton-text"
+                ></ion-skeleton-text>
+              </p>
+            </section>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+</ion-list>
+
+<ion-grid *ngIf="view === 'column'" class="ion-no-padding">
+  <ion-row>
+    <ion-col size="6" sizeMd="4" *ngFor="let item of itemLoader">
+      <ion-card mode="ios" class="box-product column-view">
+        <ion-card-content class="ion-no-padding">
+          <ion-grid class="ion-no-padding">
+            <ion-row>
+              <ion-col size="12" class="ion-no-padding">
+                <ion-skeleton-text
+                  animated
+                  style="width: auto; height: 150px"
+                  class="skeleton-imgage-category"
+                ></ion-skeleton-text>
+              </ion-col>
+              <ion-col size="12">
+                <section class="product-details">
+                  <h3 class="ion-text-center">
+                    <ion-skeleton-text
+                      animated
+                      style="width: 70%"
+                      class="skeleton-text"
+                    ></ion-skeleton-text>
+                  </h3>
+                  <p class="ion-text-center">
+                    <ion-skeleton-text
+                      animated
+                      style="width: 40%"
+                      class="skeleton-text"
+                    ></ion-skeleton-text>
+                  </p>
+                </section>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+</ion-grid>

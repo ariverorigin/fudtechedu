@@ -1,13 +1,14 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>
-      Hello! <span class="text-color-primary text-bold">Gian</span>
+    <ion-title class="animate-logo-text">
+      <ion-icon name="ar-logo" class="animate-logo-icon"></ion-icon>
+      <span class="text-color-secondary text-bold">F</span>
+      <span class="text-color-primary">ood</span>
+      <span class="text-color-secondary text-bold">C</span>
+      <span class="text-color-primary">hem</span>
+      <span class="text-color-secondary text-bold">E</span>
+      <span class="text-color-primary">du</span>
     </ion-title>
-    <ion-buttons slot="end">
-      <ion-button>
-        <ion-icon slot="icon-only" name="ar-search"></ion-icon>
-      </ion-button>
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -16,13 +17,51 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <h1>Featured Lessons</h1>
-  <ng-container *ngFor="let item of Data">
-    <app-lesson-item
-      [item]="item"
-      (onClick)="onClickItem($event)"
-    ></app-lesson-item>
+  <section
+    class="ion-padding-start ion-padding-end"
+    *ngIf="!loading && IsMoreThanSixHoursCache"
+  >
+    <p class="line-through-text">
+      <span class="text-color-placeholder">
+        Last update on {{ HomeTimestamp | amLocal | amDateFormat:
+        DateFormats.ShortMonthDayCommaYearHourMinuteSecondsMeridiem }}. Pull to
+        refresh
+      </span>
+    </p>
+  </section>
+
+  <div
+    class="ion-padding-start ion-padding-end"
+    [class.ion-padding-top]="!IsMoreThanSixHoursCache || loading"
+  >
+    <app-banner [banners]="Banners" [loading]="loadingBanner"></app-banner>
+  </div>
+
+  <ng-container *ngIf="!loading">
+    <h1>Featured Lessons</h1>
+    <ng-container *ngFor="let item of Data">
+      <app-lesson-item
+        [item]="item"
+        (onClick)="onClickItem($event)"
+      ></app-lesson-item>
+    </ng-container>
   </ng-container>
+
+  <ng-container *ngIf="loading">
+    <h1>
+      <ion-skeleton-text
+        animated
+        style="width: 50%; height: 30px; border-radius: 5px"
+        class="skeleton-text"
+      ></ion-skeleton-text>
+    </h1>
+
+    <app-skeleton-box-product
+      [noOfItemLoader]="3"
+      view="list"
+    ></app-skeleton-box-product>
+  </ng-container>
+
   <section
     class="no-record-container ion-margin"
     *ngIf="Data.length === 0 && !loading"

@@ -33,7 +33,7 @@ export class ImageCachingComponent implements OnInit {
     if (!this.platform.is('cordova')) this._src = imageUrl;
     else {
       const imageCacheFilePath = `${this.fileService.DataDirectoryBasePath}${environment.cache_folder}`;
-
+      console.log(imageCacheFilePath, fileName);
       this.file
         .checkFile(`${imageCacheFilePath}/`, fileName)
         .then(async (result) => {

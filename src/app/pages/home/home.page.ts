@@ -9,9 +9,10 @@ import {
   EButtonMode,
   ErrorMessagesEnum,
   NoItemViewType,
+  DateFormats,
 } from 'src/app/utilities/enum';
 import { Router } from '@angular/router';
-
+import * as moment from 'moment';
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
@@ -19,6 +20,9 @@ import { Router } from '@angular/router';
 })
 export class HomePage implements OnInit {
   loading: boolean;
+  loadingBanner: boolean;
+  now = moment().format();
+
   constructor(
     private apiService: APIService,
     private sharedDataService: SharedDataService,
@@ -28,21 +32,37 @@ export class HomePage implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit() {
-    this.fetchData();
+  async ngOnInit(refresher?: any) {
+    this.sharedDataService.featuredLesson = [];
+    this.sharedDataService.banners = [];
+    this.loading = true;
+    this.loadingBanner = true;
+    this.initializeBanner(refresher);
+    await this.fetchData(null, refresher);
+  }
+
+  async initializeBanner(refresher?: any) {
+    setTimeout(() => {
+      refresher ? refresher.target.complete() : null;
+    }, 100);
+    const localBannerSrc = await this.storage.get(STORAGE_KEY.BANNERS);
+    if (!localBannerSrc || refresher) {
+      const result: any = await this.sharedDataService.getPageBanner();
+      this.storage.set(STORAGE_KEY.BANNERS, result ? result : []);
+      this.loadingBanner = false;
+    } else {
+      this.sharedDataService.banners = localBannerSrc || [];
+      setTimeout(() => {
+        this.loadingBanner = false;
+      }, 100);
+    }
   }
 
   doRefresh(refresher: any) {
-    this.sharedDataService.lessons = [];
-    this.fetchData(null, refresher);
+    this.ngOnInit(refresher);
   }
 
   async fetchData(q?: string, refresher?: any) {
-    this.loading = true;
-    await this.messageService.showLoading({
-      message: 'Initializing...',
-    });
-
     setTimeout(() => {
       refresher ? refresher.target.complete() : null;
     }, 100);
@@ -61,24 +81,29 @@ export class HomePage implements OnInit {
       STORAGE_KEY.FEATURED_LESSON
     );
 
+    const tempHomeTimestamp = await this.storage.get(
+      STORAGE_KEY.TIMESTAMP_HOME
+    );
+
+    this.sharedDataService.homeTimestamp =
+      tempHomeTimestamp || this.sharedDataService.homeTimestamp;
+
     if (!tempLessonsLocal || refresher) {
       this.apiService.getData('products', params).subscribe(
         (response) => {
           this.storage.set(STORAGE_KEY.FEATURED_LESSON, response);
           this.sharedDataService.featuredLesson = response ? response : [];
-          this.messageService.dismisActiveControllers('loading');
           this.loading = false;
+          this.storage.set(STORAGE_KEY.TIMESTAMP_HOME, moment().format());
         },
         (e) => {
           console.log(e);
           this.messageService.presentToast(ErrorMessagesEnum.Default);
-          this.messageService.dismisActiveControllers('loading');
           this.loading = false;
         }
       );
     } else {
       this.sharedDataService.featuredLesson = tempLessonsLocal;
-      await this.messageService.dismisActiveControllers('loading');
       this.loading = false;
     }
   }
@@ -94,6 +119,10 @@ export class HomePage implements OnInit {
 
   get Data() {
     return this.sharedDataService.featuredLesson || [];
+  }
+
+  get Banners() {
+    return this.sharedDataService.banners;
   }
 
   get NoRecordsConfig(): INoItemConfig {
@@ -114,5 +143,19 @@ export class HomePage implements OnInit {
 
   get NoRecordsViewType() {
     return NoItemViewType;
+  }
+
+  get IsMoreThanSixHoursCache() {
+    return (
+      moment().diff(moment(this.sharedDataService.homeTimestamp), 'hours') > 6
+    );
+  }
+
+  get HomeTimestamp() {
+    return this.sharedDataService.homeTimestamp;
+  }
+
+  get DateFormats() {
+    return DateFormats;
   }
 }

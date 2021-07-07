@@ -9,7 +9,7 @@ import {
   HttpHeaders,
   HttpParams,
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { WooService } from './woo.service';
 import { HTTP } from '@ionic-native/http/ngx';
 import { Platform } from '@ionic/angular';
@@ -52,13 +52,38 @@ export class APIService {
     };
   }
 
+  getDataViaUrl(url, param): Observable<any> {
+    if (this.networkService.isConnected) {
+      if (this.platform.is('cordova')) {
+        return from(
+          new Promise((resolve, reject) => {
+            this.http
+              .get(url, param || {}, this.Header.headers)
+              .then((response) => {
+                resolve(JSON.parse(response.data));
+              })
+              .catch((e) => {
+                reject(e);
+              });
+          })
+        );
+      } else {
+        const queryParams = QueryString.stringify(param),
+          tempURL = !queryParams ? url : `${url}&${queryParams}`;
+        return this.httpClient.get(`${tempURL}`, this.Header);
+      }
+    } else {
+      return Observable.throw(environment.connection_error);
+    }
+  }
+
   getData(slug?: string, data?: any): Observable<any> {
     const request = this.prepareUrl(slug, 'get');
     // url = includeBaseUrl ? `${this.BaseUrl}${url}` : url;
     // const qry = QueryString.stringify(data),
     //   endpointUrl = !qry ? url : `${url}?${qry}`;
 
-    if (this.networkService.isConnected) {
+    if (!this.networkService.isConnected) {
       if (this.platform.is('cordova')) {
         return from(
           new Promise((resolve, reject) => {
@@ -85,7 +110,7 @@ export class APIService {
         });
       }
     } else {
-      return Observable.throw('CONN_ERR');
+      return throwError(environment.connection_error);
     }
   }
 
@@ -97,7 +122,7 @@ export class APIService {
         this.Header
       );
     } else {
-      return Observable.throw('CONN_ERR');
+      return Observable.throw(environment.connection_error);
     }
   }
 
@@ -109,7 +134,7 @@ export class APIService {
         this.Header
       );
     } else {
-      return Observable.throw('CONN_ERR');
+      return Observable.throw(environment.connection_error);
     }
   }
 
@@ -117,7 +142,7 @@ export class APIService {
     if (this.networkService.isConnected) {
       return this.httpClient.delete<any>(`${this.BaseUrl}${url}`, this.Header);
     } else {
-      return Observable.throw('CONN_ERR');
+      return Observable.throw(environment.connection_error);
     }
   }
 

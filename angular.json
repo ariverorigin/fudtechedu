@@ -45,6 +45,7 @@
               "src/theme/variables.scss",
               "src/theme/font.scss",
               "src/global.scss",
+              "src/theme/animista.scss",
               "src/theme/utilities.scss",
               "src/theme/stylesheet.scss"
             ],

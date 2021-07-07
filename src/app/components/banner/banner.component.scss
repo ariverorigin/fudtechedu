@@ -1,0 +1,19 @@
+ion-slides {
+  //   --bullet-background: var(--ion-color-dark);
+  //   --bullet-background-active: var(--ion-color-secondary);
+  min-height: 100px !important;
+  border-radius: 10px;
+}
+
+:host ::ng-deep ion-slides {
+  .swiper-pagination {
+    .swiper-pagination-bullet {
+      background: rgba(240, 188, 53, 0.5);
+    }
+    .swiper-pagination-bullet-active {
+      background: var(--ion-color-secondary) !important;
+      width: 15px !important;
+      border-radius: 10px !important;
+    }
+  }
+}
