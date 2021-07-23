@@ -134,3 +134,8 @@ ion-skeleton-text.skeleton-image-round {
     font-size: 10px !important;
   }
 }
+
+ion-slides ion-slide div,
+ion-slides ion-slide app-image-caching {
+  width: 100% !important; //your width here
+}

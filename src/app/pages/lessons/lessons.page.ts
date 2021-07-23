@@ -22,6 +22,7 @@ export class LessonsPage implements OnInit {
   loading: boolean;
   onSearch: boolean;
   searchData: IProduct[];
+  now = moment();
 
   constructor(
     private apiService: APIService,
@@ -33,6 +34,9 @@ export class LessonsPage implements OnInit {
   ) {}
 
   ngOnInit() {
+    setInterval(() => {
+      this.now = moment();
+    }, 1);
     this.fetchData();
   }
 
@@ -68,7 +72,11 @@ export class LessonsPage implements OnInit {
           if (!q) {
             this.storage.set(STORAGE_KEY.LESSONS, response);
             this.sharedDataService.lessons = response ? response : [];
-            this.storage.set(STORAGE_KEY.TIMESTAMP_HOME, moment().format());
+            this.sharedDataService.lessonsTimestamp = moment().format();
+            this.storage.set(
+              STORAGE_KEY.TIMESTAMP_HOME,
+              this.sharedDataService.lessonsTimestamp
+            );
           } else {
             this.searchData = response;
           }
@@ -151,9 +159,13 @@ export class LessonsPage implements OnInit {
 
   get IsMoreThanSixHoursCache() {
     return (
-      moment().diff(moment(this.sharedDataService.lessonsTimestamp), 'hours') >
-      6
+      this.Now.diff(moment(this.sharedDataService.homeTimestamp), 'minutes') >
+      30
     );
+  }
+
+  get Now() {
+    return this.now;
   }
 
   get LessonTimestamp() {

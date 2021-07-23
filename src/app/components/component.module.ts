@@ -3,6 +3,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
+import { MomentModule } from 'ngx-moment';
 
 import {
   LessonItemComponent,
@@ -28,7 +29,7 @@ const components = [
 
 @NgModule({
   declarations: components,
-  imports: [RouterModule, IonicModule, CommonModule, FormsModule],
+  imports: [RouterModule, IonicModule, CommonModule, FormsModule, MomentModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   exports: [...components],
 })

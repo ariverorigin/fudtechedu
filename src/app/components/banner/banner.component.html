@@ -1,8 +1,8 @@
-<div *ngIf="loading">
+<div *ngIf="isLoading">
   <ion-skeleton-text animated style="height: 200px; border-radius: 5px">
   </ion-skeleton-text>
 </div>
-<ng-container *ngIf="banners.length > 0" [class.ion-hide]="loading">
+<ng-container *ngIf="banners.length > 0 && !isLoading">
   <ion-slides
     pager="true"
     #ionSlides

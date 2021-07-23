@@ -134,6 +134,6 @@ export class DetailsPage implements OnInit {
   }
 
   get SliderOptions() {
-    return { zoom: true };
+    return { zoom: true, loop: false };
   }
 }

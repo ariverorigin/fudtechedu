@@ -11,6 +11,8 @@ import {
 import { DEFAULT_CONFIGS } from 'src/app/utilities/data/constants.data';
 import { WooService } from 'src/app/utilities/services';
 import { IProduct } from 'src/app/utilities/interfaces';
+import { CustomProductMetaKeyEnum, DateFormats } from 'src/app/utilities/enum';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-lesson-item',
@@ -22,12 +24,34 @@ export class LessonItemComponent implements OnInit, OnChanges {
   @Input() view: 'list' | 'column' = 'list';
   @Output() onClick: EventEmitter<IProduct> = new EventEmitter();
 
+  videoUrl: string;
+  exerciseUrl: string;
+
   constructor(
     private wooService: WooService,
     private sharedDataService: SharedDataService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.videoUrl = this.sharedDataService.getMetaDataByKey(
+      CustomProductMetaKeyEnum.VideoUrl,
+      this.item.meta_data,
+      true
+    );
+    this.videoUrl =
+      this.videoUrl && this.sharedDataService.isValidURL(this.videoUrl)
+        ? this.videoUrl
+        : null;
+    this.exerciseUrl = this.sharedDataService.getMetaDataByKey(
+      CustomProductMetaKeyEnum.ExerciseUrl,
+      this.item.meta_data,
+      true
+    );
+    this.exerciseUrl =
+      this.exerciseUrl && this.sharedDataService.isValidURL(this.exerciseUrl)
+        ? this.exerciseUrl
+        : null;
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (
@@ -55,5 +79,16 @@ export class LessonItemComponent implements OnInit, OnChanges {
 
   get DefaultThumbnail() {
     return DEFAULT_CONFIGS.Thumbnail;
+  }
+
+  get CreatedNotEqualToUpdated() {
+    return (
+      moment(this.item.date_created).format(DateFormats.YearDashMonthDashDay) !=
+      moment(this.item.date_modified).format(DateFormats.YearDashMonthDashDay)
+    );
+  }
+
+  get DateFormats() {
+    return DateFormats;
   }
 }

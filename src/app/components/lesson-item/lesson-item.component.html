@@ -40,9 +40,39 @@
           <section class="ion-padding">
             <h3>{{ item?.name }}</h3>
             <p>
+              <small>
+                {{ CreatedNotEqualToUpdated ? "Last Update: " : "" }}
+                {{
+                  (CreatedNotEqualToUpdated
+                    ? item?.date_modified
+                    : item?.date_created
+                  )
+                    | amLocal
+                    | amDateFormat
+                      : DateFormats.ShortMonthDayCommaYearHourMinuteSecondsMeridiem
+                }}
+              </small>
+            </p>
+            <section>
+              <ion-icon
+                *ngIf="videoUrl"
+                name="ar-play-button"
+                color="danger"
+                class="ion-margin-end"
+              ></ion-icon>
+              <ion-icon
+                *ngIf="exerciseUrl"
+                name="ar-quiz"
+                color="success"
+              ></ion-icon>
+            </section>
+
+            <p>
               {{
-                (item?.short_description || "").length > 150
-                  ? (item?.short_description | slice: 0:150) + "..."
+                (item?.short_description || "").length >
+                (videoUrl || exerciseUrl ? 90 : 120)
+                  ? (item?.short_description
+                      | slice: 0:(videoUrl || exerciseUrl ? 90 : 120)) + "..."
                   : item?.short_description
               }}
             </p>

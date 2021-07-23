@@ -20,8 +20,8 @@ import * as moment from 'moment';
 })
 export class HomePage implements OnInit {
   loading: boolean;
-  loadingBanner: boolean;
-  now = moment().format();
+  loadingBanner: boolean = true;
+  now = moment();
 
   constructor(
     private apiService: APIService,
@@ -33,6 +33,9 @@ export class HomePage implements OnInit {
   ) {}
 
   async ngOnInit(refresher?: any) {
+    setInterval(() => {
+      this.now = moment();
+    }, 1);
     this.sharedDataService.featuredLesson = [];
     this.sharedDataService.banners = [];
     this.loading = true;
@@ -49,12 +52,14 @@ export class HomePage implements OnInit {
     if (!localBannerSrc || refresher) {
       const result: any = await this.sharedDataService.getPageBanner();
       this.storage.set(STORAGE_KEY.BANNERS, result ? result : []);
-      this.loadingBanner = false;
+      setTimeout(() => {
+        this.loadingBanner = false;
+      }, 1000);
     } else {
       this.sharedDataService.banners = localBannerSrc || [];
       setTimeout(() => {
         this.loadingBanner = false;
-      }, 100);
+      }, 1000);
     }
   }
 
@@ -94,7 +99,11 @@ export class HomePage implements OnInit {
           this.storage.set(STORAGE_KEY.FEATURED_LESSON, response);
           this.sharedDataService.featuredLesson = response ? response : [];
           this.loading = false;
-          this.storage.set(STORAGE_KEY.TIMESTAMP_HOME, moment().format());
+          this.sharedDataService.homeTimestamp = moment().format();
+          this.storage.set(
+            STORAGE_KEY.TIMESTAMP_HOME,
+            this.sharedDataService.homeTimestamp
+          );
         },
         (e) => {
           this.sharedDataService.featuredLesson = tempLessonsLocal;
@@ -147,8 +156,13 @@ export class HomePage implements OnInit {
 
   get IsMoreThanSixHoursCache() {
     return (
-      moment().diff(moment(this.sharedDataService.homeTimestamp), 'hours') > 6
+      this.Now.diff(moment(this.sharedDataService.homeTimestamp), 'minutes') >
+      30
     );
+  }
+
+  get Now() {
+    return this.now;
   }
 
   get HomeTimestamp() {

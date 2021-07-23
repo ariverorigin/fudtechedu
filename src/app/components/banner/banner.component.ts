@@ -35,4 +35,8 @@ export class BannerComponent implements OnInit, AfterViewInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     console.log(changes);
   }
+
+  get isLoading() {
+    return this.loading;
+  }
 }
