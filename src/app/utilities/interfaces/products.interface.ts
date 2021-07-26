@@ -11,6 +11,7 @@ export interface IProductCategory {
   slug?: string;
   image?: any;
   menu_order?: number;
+  count?: number;
 }
 
 export interface IProduct {

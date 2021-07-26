@@ -139,8 +139,13 @@ export class HomePage implements OnInit {
         })
         .subscribe(
           (response) => {
+            response = response
+              ? response.sort((a, b) => a.menu_order - b.menu_order)
+              : [];
             this.storage.set(STORAGE_KEY.CATEGORIES, response);
-            this.sharedDataService.categories = response ? response : [];
+            this.sharedDataService.categories = response
+              ? response.sort((a, b) => a.menu_order - b.menu_order)
+              : [];
             this.loading = false;
             this.sharedDataService.categoriesTimestamp = moment().format();
             this.storage.set(

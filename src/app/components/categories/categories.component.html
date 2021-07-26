@@ -1,12 +1,16 @@
 <ion-card mode="ios" class="" button>
   <ion-card-content class="ion-no-padding">
     <section class="details">
-      <p class="title">{{ item.name }}</p>
+      <p class="sub-title">Chapter {{ item?.menu_order - 1 }}</p>
+      <p class="title">
+        {{ item?.name }}
+      </p>
+      <p class="count">{{ item?.count }} <span>Lessons</span></p>
     </section>
     <app-image-caching
-      *ngIf="item.image && item.image.src"
+      *ngIf="item?.image && item?.image.src"
       skeletonWidth="100%"
-      [src]="item.image.src"
+      [src]="item?.image.src"
     ></app-image-caching>
   </ion-card-content>
 </ion-card>
