@@ -2,6 +2,7 @@ import { Subscription } from 'rxjs';
 import { Component } from '@angular/core';
 import { MenuController, NavController, Platform } from '@ionic/angular';
 import {
+  APIService,
   FileService,
   MessageService,
   StorageService,
@@ -25,7 +26,8 @@ export class AppComponent {
     private navController: NavController,
     private messageService: MessageService,
     private router: Router,
-    private fileService: FileService
+    private fileService: FileService,
+    private apiService: APIService
   ) {
     this.storageService.init();
     this.initializeApp();

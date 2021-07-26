@@ -1,0 +1,12 @@
+<ion-card mode="ios" class="" button>
+  <ion-card-content class="ion-no-padding">
+    <section class="details">
+      <p class="title">{{ item.name }}</p>
+    </section>
+    <app-image-caching
+      *ngIf="item.image && item.image.src"
+      skeletonWidth="100%"
+      [src]="item.image.src"
+    ></app-image-caching>
+  </ion-card-content>
+</ion-card>

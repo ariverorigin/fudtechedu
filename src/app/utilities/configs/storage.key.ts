@@ -6,4 +6,6 @@ export const STORAGE_KEY = {
   BANNERS: 'bannerSrc',
   TIMESTAMP_HOME: 'timestamp_home',
   TIMESTAMP_LESSONS: 'timestamp_lessons',
+  CATEGORIES: 'categories',
+  TIMESTAMP_CATEGORIES: 'timestamp_categories',
 };

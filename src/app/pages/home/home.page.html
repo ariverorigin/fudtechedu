@@ -38,12 +38,13 @@
   </div>
 
   <ng-container *ngIf="!loading">
-    <h1>Featured Lessons</h1>
-    <ng-container *ngFor="let item of Data">
-      <app-lesson-item
+    <h1>Chapters</h1>
+    <ng-container *ngFor="let item of Categories">
+      <!-- <app-lesson-item
         [item]="item"
         (onClick)="onClickItem($event)"
-      ></app-lesson-item>
+      ></app-lesson-item> -->
+      <app-categories [item]="item"></app-categories>
     </ng-container>
   </ng-container>
 

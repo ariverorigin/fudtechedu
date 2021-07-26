@@ -1,5 +1,9 @@
 import { APIService } from './api.service';
-import { IMetaData, IProduct } from 'src/app/utilities/interfaces';
+import {
+  IMetaData,
+  IProduct,
+  IProductCategory,
+} from 'src/app/utilities/interfaces';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import * as moment from 'moment';
@@ -14,6 +18,9 @@ export class SharedDataService {
   featuredLesson: IProduct[];
   homeTimestamp = moment().format();
   banners: string[] = [];
+
+  categories: IProductCategory[];
+  categoriesTimestamp = moment().format();
 
   constructor(private apiService: APIService) {}
 

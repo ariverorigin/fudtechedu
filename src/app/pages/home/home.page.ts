@@ -40,6 +40,7 @@ export class HomePage implements OnInit {
     this.sharedDataService.banners = [];
     this.loading = true;
     this.loadingBanner = true;
+    this.getProductCategories(refresher);
     this.initializeBanner(refresher);
     await this.fetchData(null, refresher);
   }
@@ -117,6 +118,48 @@ export class HomePage implements OnInit {
     }
   }
 
+  async getProductCategories(refresher?: any) {
+    const tempCategoriesLocal = await this.storage.get(STORAGE_KEY.CATEGORIES);
+    this.sharedDataService.featuredLesson = await this.storage.get(
+      STORAGE_KEY.CATEGORIES
+    );
+
+    const tempCategoriesTimestamp = await this.storage.get(
+      STORAGE_KEY.TIMESTAMP_CATEGORIES
+    );
+
+    this.sharedDataService.categoriesTimestamp =
+      tempCategoriesTimestamp || this.sharedDataService.categoriesTimestamp;
+
+    if (!tempCategoriesLocal || refresher) {
+      this.apiService
+        .getData('products/categories', {
+          per_page: 100,
+          hide_empty: true,
+        })
+        .subscribe(
+          (response) => {
+            this.storage.set(STORAGE_KEY.CATEGORIES, response);
+            this.sharedDataService.categories = response ? response : [];
+            this.loading = false;
+            this.sharedDataService.categoriesTimestamp = moment().format();
+            this.storage.set(
+              STORAGE_KEY.TIMESTAMP_CATEGORIES,
+              this.sharedDataService.categoriesTimestamp
+            );
+          },
+          (e) => {
+            this.sharedDataService.featuredLesson = tempCategoriesLocal;
+            this.messageService.presentToast(ErrorMessagesEnum.Default);
+            this.loading = false;
+          }
+        );
+    } else {
+      this.sharedDataService.categories = tempCategoriesLocal;
+      this.loading = false;
+    }
+  }
+
   onClickItem(item: IProduct) {
     this.sharedDataService.selectedLesson = item;
     this.navController.navigateForward('details');
@@ -171,5 +214,9 @@ export class HomePage implements OnInit {
 
   get DateFormats() {
     return DateFormats;
+  }
+
+  get Categories() {
+    return this.sharedDataService.categories || [];
   }
 }

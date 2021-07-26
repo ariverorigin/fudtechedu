@@ -1,14 +1,16 @@
-import { IMetaData } from "src/app/utilities/interfaces";
+import { IMetaData } from 'src/app/utilities/interfaces';
 import {
   EWoocommerceProductType,
   EWoocommerceProductStatus,
   EWooCommerceStockStatus,
-} from "src/app/utilities/enum";
+} from 'src/app/utilities/enum';
 
 export interface IProductCategory {
   id?: number;
   name?: string;
   slug?: string;
+  image?: any;
+  menu_order?: number;
 }
 
 export interface IProduct {
@@ -49,7 +51,7 @@ export interface IProduct {
   manage_stock?: boolean;
   stock_quantity?: number;
   stock_status?: EWooCommerceStockStatus;
-  backorders?: "no" | "notify" | "yes";
+  backorders?: 'no' | 'notify' | 'yes';
   backorders_allowed?: boolean;
   backordered?: boolean;
   sold_individually?: boolean;
