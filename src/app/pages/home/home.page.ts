@@ -1,7 +1,11 @@
 import { SharedDataService } from 'src/app/utilities/services/shared-data.service';
 import { Component, OnInit } from '@angular/core';
 import { APIService, MessageService } from 'src/app/utilities/services';
-import { INoItemConfig, IProduct } from 'src/app/utilities/interfaces';
+import {
+  INoItemConfig,
+  IProduct,
+  IProductCategory,
+} from 'src/app/utilities/interfaces';
 import { NavController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { STORAGE_KEY } from 'src/app/utilities/configs/storage.key';
@@ -174,6 +178,11 @@ export class HomePage implements OnInit {
     this.router.navigateByUrl('tabs/lessons');
   }
 
+  onClickCategoryItem(item: IProductCategory) {
+    this.sharedDataService.selectedCategory = item;
+    this.navController.navigateForward('lessons');
+  }
+
   get Data() {
     return this.sharedDataService.featuredLesson || [];
   }
@@ -204,7 +213,7 @@ export class HomePage implements OnInit {
 
   get IsMoreThanSixHoursCache() {
     return (
-      this.Now.diff(moment(this.sharedDataService.homeTimestamp), 'minutes') >
+      this.Now.diff(moment(this.sharedDataService.homeTimestamp), 'minutes') >=
       30
     );
   }

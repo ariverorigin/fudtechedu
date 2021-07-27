@@ -1,4 +1,4 @@
-<ion-card mode="ios" class="" button>
+<ion-card mode="ios" class="" button (click)="onClick.emit(item)">
   <ion-card-content class="ion-no-padding">
     <section class="details">
       <p class="sub-title">Chapter {{ item?.menu_order - 1 }}</p>

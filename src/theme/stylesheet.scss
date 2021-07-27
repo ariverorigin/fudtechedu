@@ -139,3 +139,13 @@ ion-slides ion-slide div,
 ion-slides ion-slide app-image-caching {
   width: 100% !important; //your width here
 }
+
+ion-title {
+  .title {
+    text-overflow: ellipsis;
+  }
+  .sub-title {
+    font-size: 10px;
+    color: var(--ion-color-medium);
+  }
+}

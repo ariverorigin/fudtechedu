@@ -22,6 +22,8 @@ export class SharedDataService {
   categories: IProductCategory[];
   categoriesTimestamp = moment().format();
 
+  selectedCategory: IProductCategory;
+
   constructor(private apiService: APIService) {}
 
   stripHtml(html) {
@@ -91,5 +93,27 @@ export class SharedDataService {
     return all
       ? fragment.querySelectorAll(searchString)
       : fragment.querySelector(searchString);
+  }
+
+  replaceTagOnStringHtml(html, oldTag, newTag) {
+    const fragment = document.createDocumentFragment(),
+      container = document.createElement('div');
+
+    container.innerHTML = html;
+    fragment.appendChild(container);
+
+    const elements = fragment.querySelectorAll(oldTag);
+    (elements || []).forEach((el) => {
+      let tempNewTag = document.createElement(newTag);
+      if (el && el.src && oldTag === 'img') {
+        tempNewTag.setAttribute('src', el.getAttribute('src'));
+        tempNewTag.setAttribute('isImageViewer', true);
+      }
+
+      el.parentNode.insertBefore(tempNewTag, el);
+      el.parentNode.removeChild(el);
+    });
+
+    return container.innerHTML || html;
   }
 }

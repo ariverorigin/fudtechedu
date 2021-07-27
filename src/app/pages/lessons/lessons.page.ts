@@ -10,9 +10,9 @@ import {
   ErrorMessagesEnum,
   NoItemViewType,
 } from 'src/app/utilities/enum';
-import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { environment } from 'src/environments/environment';
+
 @Component({
   selector: 'app-lessons',
   templateUrl: './lessons.page.html',
@@ -23,6 +23,7 @@ export class LessonsPage implements OnInit {
   onSearch: boolean;
   searchData: IProduct[];
   now = moment();
+  lessonTimeStamp = moment().format();
 
   constructor(
     private apiService: APIService,
@@ -34,9 +35,14 @@ export class LessonsPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    setInterval(() => {
-      this.now = moment();
-    }, 1);
+    if (!this.sharedDataService.selectedCategory) {
+      this.navController
+        .pop()
+        .then(() =>
+          this.messageService.presentToast('Please select category.')
+        );
+    }
+    setInterval(() => (this.now = moment()), 1);
     this.fetchData();
   }
 
@@ -55,28 +61,29 @@ export class LessonsPage implements OnInit {
       search: q,
       status: 'publish',
       per_page: 100,
+      category: this.SelectedCategory.id,
     };
 
-    const tempLessonsLocal = await this.storage.get(STORAGE_KEY.LESSONS);
+    const tempStorageKey = `${STORAGE_KEY.LESSONS}_${this.SelectedCategory.id}`;
+    const tempLessonTimestampKey = `${STORAGE_KEY.TIMESTAMP_LESSONS}_${this.SelectedCategory.id}`;
 
-    const tempLessonTimestamp = await this.storage.get(
-      STORAGE_KEY.TIMESTAMP_HOME
-    );
+    const tempLessonsLocal = await this.storage.get(tempStorageKey);
 
-    this.sharedDataService.lessonsTimestamp =
-      tempLessonTimestamp || this.sharedDataService.lessonsTimestamp;
+    const tempLessonTimestamp = await this.storage.get(tempLessonTimestampKey);
+
+    this.lessonTimeStamp = tempLessonTimestamp || this.lessonTimeStamp;
 
     if (!tempLessonsLocal || refresher || q) {
       this.apiService.getData('products', params).subscribe(
         (response) => {
           if (!q) {
-            this.storage.set(STORAGE_KEY.LESSONS, response);
+            response = response
+              ? response.sort((a, b) => a.menu_order - b.menu_order)
+              : [];
+            this.storage.set(tempStorageKey, response);
             this.sharedDataService.lessons = response ? response : [];
-            this.sharedDataService.lessonsTimestamp = moment().format();
-            this.storage.set(
-              STORAGE_KEY.TIMESTAMP_HOME,
-              this.sharedDataService.lessonsTimestamp
-            );
+            this.lessonTimeStamp = moment().format();
+            this.storage.set(tempLessonTimestampKey, this.lessonTimeStamp);
           } else {
             this.searchData = response;
           }
@@ -129,10 +136,10 @@ export class LessonsPage implements OnInit {
     this.onSearch = false;
   }
 
-  onInputSearchBar(event: any) {
+  async onInputSearchBar(event: any) {
     const q = event && event.target ? event.target.value : null;
     this.loading = true;
-    this.fetchData(q);
+    this.searchData = await this.searchDataViaLocal(q);
   }
 
   onClearSearchBar() {
@@ -158,10 +165,7 @@ export class LessonsPage implements OnInit {
   }
 
   get IsMoreThanSixHoursCache() {
-    return (
-      this.Now.diff(moment(this.sharedDataService.homeTimestamp), 'minutes') >
-      30
-    );
+    return this.Now.diff(moment(this.lessonTimeStamp), 'minutes') > 30;
   }
 
   get Now() {
@@ -169,10 +173,14 @@ export class LessonsPage implements OnInit {
   }
 
   get LessonTimestamp() {
-    return this.sharedDataService.lessonsTimestamp;
+    return this.lessonTimeStamp;
   }
 
   get DateFormats() {
     return DateFormats;
+  }
+
+  get SelectedCategory() {
+    return this.sharedDataService.selectedCategory;
   }
 }

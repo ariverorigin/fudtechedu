@@ -23,9 +23,8 @@
   >
     <p class="line-through-text">
       <span class="text-color-placeholder">
-        Last update on {{ HomeTimestamp | amLocal | amDateFormat:
-        DateFormats.ShortMonthDayCommaYearHourMinuteSecondsMeridiem }}. Pull to
-        refresh
+        Last updated: {{ HomeTimestamp | amTimeAgo:true }} ago.
+        <strong>Pull to refresh</strong>
       </span>
     </p>
   </section>
@@ -44,7 +43,10 @@
         [item]="item"
         (onClick)="onClickItem($event)"
       ></app-lesson-item> -->
-      <app-categories [item]="item"></app-categories>
+      <app-categories
+        [item]="item"
+        (onClick)="onClickCategoryItem($event)"
+      ></app-categories>
     </ng-container>
   </ng-container>
 

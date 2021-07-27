@@ -8,9 +8,19 @@ import { DetailsPageRoutingModule } from './details-routing.module';
 
 import { DetailsPage } from './details.page';
 import { UtilitiesModule } from 'src/app/utilities/utilities.module';
+import { DynamicHooksModule, HookParserEntry } from 'ngx-dynamic-hooks';
+import { ImageCachingComponent } from '../../components';
+
+const componentParsers: Array<HookParserEntry> = [
+  { component: ImageCachingComponent },
+  // ...
+];
 
 @NgModule({
   imports: [
+    DynamicHooksModule.forRoot({
+      globalParsers: componentParsers,
+    }),
     CommonModule,
     FormsModule,
     IonicModule,

@@ -29,6 +29,8 @@ export class DetailsPage implements OnInit {
   isSavedOffline: boolean;
   imagesSrc: any[];
 
+  description: string;
+
   constructor(
     private sharedDataService: SharedDataService,
     private navController: NavController,
@@ -74,6 +76,12 @@ export class DetailsPage implements OnInit {
     this.imagesSrc = this.lesson.images
       ? JSON.parse(JSON.stringify(this.lesson.images))
       : [];
+
+    this.lesson.description = this.sharedDataService.replaceTagOnStringHtml(
+      this.lesson.description,
+      'img',
+      'app-image-caching'
+    );
   }
 
   watchVideo() {

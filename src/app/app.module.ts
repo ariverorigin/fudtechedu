@@ -22,10 +22,22 @@ import { File } from '@ionic-native/file/ngx';
 import { Base64 } from '@ionic-native/base64/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { NgxIonicImageViewerModule } from 'ngx-ionic-image-viewer';
+import { MomentModule } from 'ngx-moment';
+
+import { DynamicHooksModule, HookParserEntry } from 'ngx-dynamic-hooks';
+import { ImageCachingComponent } from './components';
+
+const componentParsers: Array<HookParserEntry> = [
+  { component: ImageCachingComponent },
+  // ...
+];
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
+    DynamicHooksModule.forRoot({
+      globalParsers: componentParsers,
+    }),
     BrowserModule,
     IonicModule.forRoot(),
     IonicStorageModule.forRoot(),
@@ -33,6 +45,7 @@ import { NgxIonicImageViewerModule } from 'ngx-ionic-image-viewer';
     UtilitiesModule,
     HttpClientModule,
     NgxIonicImageViewerModule,
+    MomentModule,
   ],
   providers: [
     Network,

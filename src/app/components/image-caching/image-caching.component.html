@@ -2,7 +2,7 @@
   [src]="_src"
   *ngIf="_src != ''; else loading"
   class="{{ _class }}"
-  (click)="isImageViewer ? openViewer() : null"
+  (click)="isImageViewer || isimageviewer ? openViewer() : null"
 />
 
 <ng-template #loading>

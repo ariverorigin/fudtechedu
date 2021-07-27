@@ -66,7 +66,9 @@
       class="brief-description"
       [innerHTML]="lesson?.short_description"
     ></div>
-    <div class="description" [innerHTML]="lesson?.description"></div>
+    <div class="description">
+      <ngx-dynamic-hooks [content]="lesson?.description"></ngx-dynamic-hooks>
+    </div>
     <div class="ion-text-center ion-margin-top ion-margin-bottom">
       <ion-button
         color="success"

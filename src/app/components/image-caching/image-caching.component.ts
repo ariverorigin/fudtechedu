@@ -16,6 +16,7 @@ export class ImageCachingComponent implements OnInit {
   _class: string = '';
 
   @Input() isImageViewer: boolean;
+  @Input() isimageviewer: boolean;
   @Input() title: string;
 
   @Input()
@@ -25,7 +26,7 @@ export class ImageCachingComponent implements OnInit {
 
   @Input()
   set src(imageUrl: string) {
-    console.log('SET SOURCE', imageUrl);
+    // console.log('SET SOURCE', imageUrl);
 
     const fileName = imageUrl.split('/').pop();
     const fileType = imageUrl.split('.').pop();
@@ -114,7 +115,7 @@ export class ImageCachingComponent implements OnInit {
       componentProps: {
         src: this._src,
         scheme: 'dark',
-        title: this.title,
+        title: this.title || '',
       },
       cssClass: 'ion-img-viewer',
       backdropDismiss: true,

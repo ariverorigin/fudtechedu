@@ -29,6 +29,9 @@
   (click)="onClickItem(item)"
 >
   <ion-card-content>
+    <div *ngIf="item?.menu_order" class="lesson-number">
+      <p>#{{ item?.menu_order }}</p>
+    </div>
     <ion-grid class="ion-no-padding">
       <ion-row>
         <ion-col size="5">

@@ -1,6 +1,15 @@
 <ion-header>
   <ion-toolbar [class.ion-show]="!onSearch" [class.ion-hide]="onSearch">
-    <ion-title>Lessons</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button icon="ar-back" color="dark"></ion-back-button>
+    </ion-buttons>
+    <ion-title mode="ios">
+      <div class="title">{{ this.SelectedCategory?.name }}</div>
+      <div class="sub-title">
+        Chapter {{ this.SelectedCategory?.menu_order - 1 }} - {{
+        this.SelectedCategory.count }} Lessons
+      </div>
+    </ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="onClickSearchButton()">
         <ion-icon slot="icon-only" name="ar-search"></ion-icon>
@@ -32,9 +41,8 @@
   >
     <p class="line-through-text">
       <span class="text-color-placeholder">
-        Last update on {{ LessonTimestamp | amLocal | amDateFormat:
-        DateFormats.ShortMonthDayCommaYearHourMinuteSecondsMeridiem }}. Pull to
-        refresh
+        Last updated: {{ LessonTimestamp | amTimeAgo:true }} ago.
+        <strong>Pull to refresh</strong>
       </span>
     </p>
   </section>
