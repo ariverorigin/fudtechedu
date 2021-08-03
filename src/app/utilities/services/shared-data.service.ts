@@ -110,6 +110,17 @@ export class SharedDataService {
         tempNewTag.setAttribute('isImageViewer', true);
       }
 
+      if (el && el.href && oldTag === 'a') {
+        tempNewTag.innerHTML = el.innerHTML;
+        tempNewTag.setAttribute('class', 'text-color-primary a-tag');
+        tempNewTag.setAttribute('data-link', el.href);
+
+        tempNewTag.setAttribute(
+          'data-download',
+          el.getAttribute('data-download')
+        );
+      }
+
       el.parentNode.insertBefore(tempNewTag, el);
       el.parentNode.removeChild(el);
     });

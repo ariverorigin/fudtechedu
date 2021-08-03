@@ -10,6 +10,7 @@ import { DetailsPage } from './details.page';
 import { UtilitiesModule } from 'src/app/utilities/utilities.module';
 import { DynamicHooksModule, HookParserEntry } from 'ngx-dynamic-hooks';
 import { ImageCachingComponent } from '../../components';
+import { PipesModule } from 'src/app/utilities/pipes/pipes.module';
 
 const componentParsers: Array<HookParserEntry> = [
   { component: ImageCachingComponent },
@@ -26,6 +27,7 @@ const componentParsers: Array<HookParserEntry> = [
     IonicModule,
     UtilitiesModule,
     DetailsPageRoutingModule,
+    PipesModule,
   ],
   declarations: [DetailsPage],
 })

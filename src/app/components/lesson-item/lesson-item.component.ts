@@ -27,6 +27,8 @@ export class LessonItemComponent implements OnInit, OnChanges {
   videoUrl: string;
   exerciseUrl: string;
 
+  description: string;
+
   constructor(
     private wooService: WooService,
     private sharedDataService: SharedDataService
@@ -63,10 +65,13 @@ export class LessonItemComponent implements OnInit, OnChanges {
   }
 
   formatProducts() {
-    this.item.short_description = this.sharedDataService.stripHtml(
-      this.item.short_description || ''
-    );
+    // this.item.short_description = this.sharedDataService.stripHtml(
+    //   this.item.short_description || ''
+    // );
     // this.item.short_description = (this.item.short_description || "").substring(0, 150);
+    this.description = this.sharedDataService.stripHtml(
+      this.item.description || ''
+    );
   }
 
   getFilename(str) {

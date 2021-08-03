@@ -62,13 +62,17 @@
   </section>
 
   <section class="content-body">
-    <div
-      class="brief-description"
-      [innerHTML]="lesson?.short_description"
-    ></div>
     <div class="description">
       <ngx-dynamic-hooks [content]="lesson?.description"></ngx-dynamic-hooks>
     </div>
+    <ng-container *ngIf="lesson?.short_description">
+      <p class="text-bold">Links</p>
+      <div
+        class="links"
+        [innerHTML]="lesson?.short_description | safeHtml"
+      ></div>
+    </ng-container>
+
     <div class="ion-text-center ion-margin-top ion-margin-bottom">
       <ion-button
         color="success"
@@ -79,7 +83,7 @@
         *ngIf="exerciseUrl"
       >
         <ion-icon name="ar-quiz" slot="start"></ion-icon>
-        Take the Quiz
+        Short Survey
       </ion-button>
     </div>
   </section>

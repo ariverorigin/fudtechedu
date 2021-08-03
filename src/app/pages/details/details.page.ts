@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  AfterContentChecked,
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+} from '@angular/core';
 import { NavController } from '@ionic/angular';
 import {
   CustomProductMetaKeyEnum,
@@ -20,7 +26,7 @@ import { STORAGE_KEY } from 'src/app/utilities/configs/storage.key';
   templateUrl: './details.page.html',
   styleUrls: ['./details.page.scss'],
 })
-export class DetailsPage implements OnInit {
+export class DetailsPage implements OnInit, AfterViewInit, AfterContentChecked {
   lesson: IProduct;
   videoUrl: string;
   exerciseUrl: string;
@@ -37,10 +43,9 @@ export class DetailsPage implements OnInit {
     private nativePluginService: NativePluginService,
     private networkService: NetworkService,
     private messageService: MessageService,
-    private storage: Storage
-  ) {}
-
-  ngOnInit() {
+    private storage: Storage,
+    private elementRef: ElementRef
+  ) {
     if (!this.sharedDataService.selectedLesson) {
       this.navController.pop();
     }
@@ -81,6 +86,46 @@ export class DetailsPage implements OnInit {
       this.lesson.description,
       'img',
       'app-image-caching'
+    );
+
+    this.lesson.short_description =
+      this.sharedDataService.replaceTagOnStringHtml(
+        this.lesson.short_description,
+        'a',
+        'span'
+      );
+  }
+
+  ngOnInit() {}
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      const elements = this.elementRef.nativeElement.querySelectorAll('.a-tag');
+      (elements || []).forEach((el) => {
+        el ? el.addEventListener('click', this.onClickLink.bind(this)) : null;
+      });
+    }, 100);
+  }
+
+  ngAfterContentChecked() {}
+
+  onClickLink(e) {
+    const el = e && e.target ? e.target : null,
+      link = el.getAttribute('data-link'),
+      isDownload = el.getAttribute('data-download');
+
+    if (!link) {
+      return false;
+    }
+
+    if (this.NoInternet) {
+      this.messageService.presentToast(ErrorMessagesEnum.NoInternet);
+      return false;
+    }
+
+    this.nativePluginService.openInAppBrowser(
+      link,
+      isDownload === 'true' ? null : '_blank'
     );
   }
 

@@ -26,6 +26,7 @@ import { MomentModule } from 'ngx-moment';
 
 import { DynamicHooksModule, HookParserEntry } from 'ngx-dynamic-hooks';
 import { ImageCachingComponent } from './components';
+import { PipesModule } from './utilities/pipes/pipes.module';
 
 const componentParsers: Array<HookParserEntry> = [
   { component: ImageCachingComponent },
@@ -46,6 +47,7 @@ const componentParsers: Array<HookParserEntry> = [
     HttpClientModule,
     NgxIonicImageViewerModule,
     MomentModule,
+    PipesModule,
   ],
   providers: [
     Network,

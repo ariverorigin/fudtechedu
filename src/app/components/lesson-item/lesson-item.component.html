@@ -72,11 +72,11 @@
 
             <p>
               {{
-                (item?.short_description || "").length >
+                (description || "").length >
                 (videoUrl || exerciseUrl ? 90 : 120)
-                  ? (item?.short_description
+                  ? (description
                       | slice: 0:(videoUrl || exerciseUrl ? 90 : 120)) + "..."
-                  : item?.short_description
+                  : description
               }}
             </p>
           </section>
