@@ -149,3 +149,28 @@ ion-title {
     color: var(--ion-color-medium);
   }
 }
+
+.modal-offcanvas-footer {
+  .modal-wrapper {
+    background: transparent;
+    max-height: 240px;
+    min-height: 100px;
+    width: 100%;
+    border-radius: 16px 16px 0 0;
+    bottom: 0;
+    position: absolute;
+
+    // @media (min-width: 768px) {
+    //   width: 350px;
+    //   height: 65%;
+    // }
+  }
+}
+
+.text-two-rows-limit {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important; /* number of lines to show */
+  -webkit-box-orient: vertical !important;
+}

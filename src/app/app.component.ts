@@ -5,6 +5,7 @@ import {
   APIService,
   FileService,
   MessageService,
+  SharedDataService,
   StorageService,
 } from './utilities/services';
 import { Router } from '@angular/router';
@@ -27,7 +28,8 @@ export class AppComponent {
     private messageService: MessageService,
     private router: Router,
     private fileService: FileService,
-    private apiService: APIService
+    private apiService: APIService,
+    private sharedDataService: SharedDataService
   ) {
     this.storageService.init();
     this.initializeApp();
@@ -37,6 +39,8 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
+      this.sharedDataService.getPageReferences();
+
       if (this.platform.is('cordova')) {
         this.initializedBackButtonAction();
         this.initializeImageCacheDirectory();

@@ -1,0 +1,16 @@
+p.title {
+  font-size: 18px !important;
+  margin-bottom: 16px !important;
+}
+
+section.description {
+  font-size: 14px !important;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+ion-content {
+  ion-list {
+    padding: 24px 0;
+  }
+}

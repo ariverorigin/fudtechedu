@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { File, FileEntry } from '@ionic-native/file/ngx';
 import { Platform } from '@ionic/angular';
-import { FileService } from 'src/app/utilities/services';
+import { FileService, SharedDataService } from 'src/app/utilities/services';
 import { environment } from 'src/environments/environment';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ModalController } from '@ionic/angular';
@@ -18,6 +18,9 @@ export class ImageCachingComponent implements OnInit {
   @Input() isImageViewer: boolean;
   @Input() isimageviewer: boolean;
   @Input() title: string;
+  @Input() cover: boolean;
+  @Input() cover_height: string;
+  @Input() cover_width: string = '100%';
 
   @Input()
   set class(className: string) {
@@ -28,14 +31,15 @@ export class ImageCachingComponent implements OnInit {
   set src(imageUrl: string) {
     // console.log('SET SOURCE', imageUrl);
 
-    const fileName = imageUrl.split('/').pop();
-    const fileType = imageUrl.split('.').pop();
+    const fileName = (imageUrl || '').split('/').pop();
+    const fileType = (imageUrl || '').split('.').pop();
 
     if (!this.platform.is('cordova')) {
-      this._src = imageUrl;
+      this._src = imageUrl || this.sharedDataService.DefaultProductImageSrc;
     } else {
       const imageCacheFilePath = `${this.fileService.DataDirectoryBasePath}${environment.cache_folder}`;
-      console.log(imageCacheFilePath, fileName);
+      // console.log(imageCacheFilePath, fileName);
+
       this.file
         .checkFile(`${imageCacheFilePath}/`, fileName)
         .then(async (result) => {
@@ -45,17 +49,13 @@ export class ImageCachingComponent implements OnInit {
           );
 
           this._src = fileData
-            ? this.sanitizer.bypassSecurityTrustUrl(
-                `data:image/${fileType};base64,${fileData}`
-              )
+            ? `data:image/${fileType};base64,${fileData}`
             : imageUrl;
         })
         .catch(async (e) => {
-          const result = await this.storeImage(
-            imageUrl,
-            imageCacheFilePath,
-            fileName
-          );
+          const result = imageUrl
+            ? await this.storeImage(imageUrl, imageCacheFilePath, fileName)
+            : false;
           if (result) {
             let fileData = await this.file.readAsText(
               imageCacheFilePath,
@@ -68,7 +68,8 @@ export class ImageCachingComponent implements OnInit {
                 )
               : imageUrl;
           } else {
-            this._src = imageUrl;
+            this._src =
+              imageUrl || this.sharedDataService.DefaultProductImageSrc;
           }
         });
     }
@@ -82,7 +83,8 @@ export class ImageCachingComponent implements OnInit {
     private platform: Platform,
     private fileService: FileService,
     private sanitizer: DomSanitizer,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private sharedDataService: SharedDataService
   ) {}
 
   ngOnInit() {}

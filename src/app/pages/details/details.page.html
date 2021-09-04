@@ -36,6 +36,8 @@
             <!-- <img [src]="image?.src" ionImgViewer /> -->
             <app-image-caching
               *ngIf="image?.src"
+              [cover]="true"
+              cover_height="300px"
               [src]="image?.src"
               class="header-image"
               [isImageViewer]="true"

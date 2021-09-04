@@ -3,6 +3,7 @@ import {
   IMetaData,
   IProduct,
   IProductCategory,
+  IReference,
 } from 'src/app/utilities/interfaces';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
@@ -23,6 +24,7 @@ export class SharedDataService {
   categoriesTimestamp = moment().format();
 
   selectedCategory: IProductCategory;
+  references: IReference[];
 
   constructor(private apiService: APIService) {}
 
@@ -51,6 +53,58 @@ export class SharedDataService {
       'i'
     ); // fragment locator
     return !!pattern.test(str);
+  }
+
+  getPageReferences() {
+    return new Promise((resolve, reject) => {
+      const tempUrl = `${environment.api}wp-json/wp/v2/pages/377`;
+      this.apiService.getDataViaUrl(tempUrl, {}).subscribe(
+        (response) => {
+          if (response && response.content) {
+            const content = response.content.rendered,
+              tempPreReferences = this.findTagOnStringHtml(
+                content,
+                'pre',
+                false
+              );
+
+            this.references = tempPreReferences
+              ? JSON.parse(tempPreReferences.innerHTML)
+              : null;
+
+            resolve(this.references || []);
+          } else {
+            this.references = [];
+            reject(false);
+          }
+        },
+        (e) => {
+          this.references = [];
+          reject(false);
+        }
+      );
+    });
+  }
+
+  async formatReferences(html?: string) {
+    await (this.References || []).map((obj) => {
+      const searchMask = obj.name,
+        regEx = new RegExp(searchMask, 'ig'),
+        dataValue = JSON.stringify(obj);
+
+      html = (html || '').replace(
+        regEx,
+        `<span class="text-color-url reference-link" data-value="${dataValue}">${obj.name}</span>`
+      );
+    });
+
+    return html;
+  }
+
+  async getReferenceByName(name?: string) {
+    return await (this.References || []).find((obj) =>
+      (obj.name || '').toLowerCase().includes(name.toLowerCase())
+    );
   }
 
   getPageBanner() {
@@ -126,5 +180,13 @@ export class SharedDataService {
     });
 
     return container.innerHTML || html;
+  }
+
+  get DefaultProductImageSrc() {
+    return './assets/default_product.jpeg';
+  }
+
+  get References() {
+    return this.references || [];
   }
 }

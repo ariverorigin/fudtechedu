@@ -8,4 +8,5 @@ export const STORAGE_KEY = {
   TIMESTAMP_LESSONS: 'timestamp_lessons',
   CATEGORIES: 'categories',
   TIMESTAMP_CATEGORIES: 'timestamp_categories',
+  REFERENCES: 'references',
 };

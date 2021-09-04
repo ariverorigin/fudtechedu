@@ -30,6 +30,13 @@ const routes: Routes = [
           import('../lessons/lessons.module').then((m) => m.LessonsPageModule),
       },
       {
+        path: 'references',
+        loadChildren: () =>
+          import('../references/references.module').then(
+            (m) => m.ReferencesPageModule
+          ),
+      },
+      {
         path: '',
         redirectTo: '/tabs/home',
         pathMatch: 'full',

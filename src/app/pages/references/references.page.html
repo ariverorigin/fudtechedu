@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>References</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="onClickSearchButton()">
+        <ion-icon slot="icon-only" name="ar-search"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <ion-searchbar
+    [class.ion-hide]="!onSearch"
+    [class.ion-show]="onSearch"
+    mode="ios"
+    showCancelButton="always"
+    animated="true"
+    debounce="800"
+    (ionChange)="onInputSearchBar($event)"
+    (ionClear)="onClearSearchBar()"
+    (ionCancel)="onClickCancelSearch()"
+  ></ion-searchbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <app-skeleton-box-product
+    *ngIf="loading"
+    [noOfItemLoader]="5"
+    view="list"
+  ></app-skeleton-box-product>
+
+  <ion-list
+    *ngIf="!loading && Data.length > 0"
+    class="ion-no-margin ion-no-padding"
+  >
+    <ion-item
+      *ngFor="let item of Data"
+      lines="full"
+      button
+      detail="true"
+      (click)="onClickReferenceItem(item)"
+    >
+      <ion-label>
+        <p class="text-bold title">{{ item?.name }}</p>
+        <p
+          class="
+            text-color-placeholder text-two-rows-limit
+            ion-text-wrap
+            description
+          "
+        >
+          {{ item?.description }}
+        </p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <section
+    class="no-record-container ion-margin"
+    *ngIf="Data.length === 0 && !loading"
+  >
+    <app-no-item [view]="NoRecordsViewType.Image" [config]="NoRecordsConfig">
+    </app-no-item>
+  </section>
+</ion-content>

@@ -11,7 +11,13 @@
   >
     <ion-slide *ngFor="let src of banners" class="ion-no-padding animate-item">
       <!-- <img [src]="src" /> -->
-      <app-image-caching skeletonWidth="100%" [src]="src"></app-image-caching>
+      <app-image-caching
+        [cover]="true"
+        cover_height="300px"
+        skeletonWidth="100%"
+        skeletonHeight="300px"
+        [src]="src"
+      ></app-image-caching>
     </ion-slide>
   </ion-slides>
 </ng-container>

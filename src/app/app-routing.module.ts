@@ -34,6 +34,14 @@ const routes: Routes = [
     loadChildren: () =>
       import('./pages/lessons/lessons.module').then((m) => m.LessonsPageModule),
   },
+  {
+    path: 'references',
+    loadChildren: () => import('./pages/references/references.module').then( m => m.ReferencesPageModule)
+  },
+  {
+    path: 'references-modal',
+    loadChildren: () => import('./pages/references-modal/references-modal.module').then( m => m.ReferencesModalPageModule)
+  },
 ];
 @NgModule({
   imports: [

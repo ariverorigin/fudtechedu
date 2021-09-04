@@ -1,14 +1,24 @@
-<img
-  [src]="_src"
-  *ngIf="_src != ''; else loading"
-  class="{{ _class }}"
-  (click)="isImageViewer || isimageviewer ? openViewer() : null"
-/>
+<ng-container *ngIf="_src != ''; else loading">
+  <img
+    [src]="_src"
+    *ngIf="!cover"
+    class="{{ _class }}"
+    (click)="isImageViewer || isimageviewer ? openViewer() : null"
+  />
+
+  <div
+    class="image-cover"
+    *ngIf="cover"
+    [style.width]="cover_width + ' !important'"
+    [style.height]="cover_height + ' !important'"
+    [style.background-image]="'url(' + _src + ')'"
+  ></div>
+</ng-container>
 
 <ng-template #loading>
   <ion-skeleton-text
     animated
-    [style.width]="skeletonWidth"
-    [style.height]="skeletonHeight"
+    [style.width]="!cover ? skeletonWidth : cover_width"
+    [style.height]="!cover ? skeletonHeight : cover_height"
   ></ion-skeleton-text>
 </ng-template>

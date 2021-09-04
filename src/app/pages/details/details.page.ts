@@ -1,3 +1,4 @@
+import { ReferencesModalPage } from './../references-modal/references-modal.page';
 import {
   AfterContentChecked,
   AfterViewInit,
@@ -11,7 +12,7 @@ import {
   ErrorMessagesEnum,
   SuccessMessagesEnum,
 } from 'src/app/utilities/enum';
-import { IProduct } from 'src/app/utilities/interfaces';
+import { IProduct, IReference } from 'src/app/utilities/interfaces';
 import {
   MessageService,
   NetworkService,
@@ -49,6 +50,9 @@ export class DetailsPage implements OnInit, AfterViewInit, AfterContentChecked {
     if (!this.sharedDataService.selectedLesson) {
       this.navController.pop();
     }
+  }
+
+  async ngOnInit() {
     this.lesson = this.sharedDataService.selectedLesson;
     this.isSavedOffline =
       (this.OfflineLessons || []).findIndex(
@@ -88,6 +92,10 @@ export class DetailsPage implements OnInit, AfterViewInit, AfterContentChecked {
       'app-image-caching'
     );
 
+    this.lesson.description = await this.sharedDataService.formatReferences(
+      this.lesson.description
+    );
+
     this.lesson.short_description =
       this.sharedDataService.replaceTagOnStringHtml(
         this.lesson.short_description,
@@ -96,14 +104,13 @@ export class DetailsPage implements OnInit, AfterViewInit, AfterContentChecked {
       );
   }
 
-  ngOnInit() {}
-
   ngAfterViewInit() {
     setTimeout(() => {
       const elements = this.elementRef.nativeElement.querySelectorAll('.a-tag');
       (elements || []).forEach((el) => {
         el ? el.addEventListener('click', this.onClickLink.bind(this)) : null;
       });
+      this.clickEventListener();
     }, 100);
   }
 
@@ -172,6 +179,33 @@ export class DetailsPage implements OnInit, AfterViewInit, AfterContentChecked {
     this.nativePluginService
       .share(this.lesson.name, this.lesson.name, null, this.lesson.permalink)
       .then((response) => console.log(response));
+  }
+
+  onClickReference(item: IReference) {
+    console.log(item);
+  }
+
+  clickEventListener() {
+    document.addEventListener('click', async (event: any) => {
+      const el = event.target,
+        elReference = el.closest('.reference-link');
+
+      if (elReference && elReference.innerHTML) {
+        const reference = await this.sharedDataService.getReferenceByName(
+          elReference.innerHTML
+        );
+        if (reference && reference.name) {
+          this.messageService.presentModal(
+            ReferencesModalPage,
+            'modal-offcanvas-footer',
+            { reference: reference },
+            {
+              backdropDismiss: true,
+            }
+          );
+        }
+      }
+    });
   }
 
   get OfflineLessons() {
